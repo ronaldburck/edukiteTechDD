@@ -486,32 +486,30 @@ body {
       <div class="chips">
         <div class="chip chip-blue">Android Phone</div>
         <div class="chip chip-blue">Individual Student</div>
-        <div class="chip chip-dim">Grade 6–12</div>
+        <div class="chip chip-dim">Grades 10–12</div>
       </div>
     </div>
     <div class="card green">
       <div class="card-title">Authentication</div>
       <div class="chips">
         <div class="chip chip-green">Phone Number</div>
-        <div class="chip chip-green">OTP via SMS</div>
-        <div class="chip chip-green">Google Sign-In</div>
-        <div class="chip chip-dim">Guest Mode</div>
-        <div class="chip chip-dim">Org / Biz Login</div>
+        <div class="chip chip-green">OTP via SMS</div>        
+        <div class="chip chip-dim">Org user Login</div>
       </div>
     </div>
     <div class="card amber">
       <div class="card-title">Registration</div>
       <div class="chips">
+	  <div class="chip chip-amber">CellPhone and Country Select</div>
         <div class="chip chip-amber">Name Entry</div>
-        <div class="chip chip-amber">Grade Selection</div>
-        <div class="chip chip-amber">Country Select</div>
+        <div class="chip chip-amber">Grade Selection</div>        
         <div class="chip chip-dim">Promo Code</div>
       </div>
     </div>
     <div class="card purple">
       <div class="card-title">Subscription</div>
       <div class="chips">
-        <div class="chip chip-purple">Google Play Billing v6.1</div>
+        <div class="chip chip-purple">Google Play Billing</div>
         <div class="chip chip-purple">Product List</div>
         <div class="chip chip-purple">Purchase / Cancel</div>
         <div class="chip chip-dim">Promo Codes</div>
@@ -619,7 +617,7 @@ body {
       </div>
     </div>
 
-    <div class="arrow-block"><div class="arrow-down"><div class="line"></div><div class="tip"></div></div><div class="arrow-label">Room DAOs · Retrofit API Services</div><div class="arrow-down"><div class="line"></div><div class="tip"></div></div></div>
+    <div class="arrow-block"><div class="arrow-down"><div class="line"></div><div class="tip"></div></div><div class="arrow-label">Room DAOs · API Services</div><div class="arrow-down"><div class="line"></div><div class="tip"></div></div></div>
 
     <div class="two-col">
       <div class="card amber">
@@ -666,12 +664,12 @@ body {
 
   <!-- RIGHT: External Services -->
   <div>
-    <div class="ext-card"><div class="ext-title">AWS Backend</div><div class="ext-item">ALB (Mumbai)</div><div class="ext-item">EKS API Cluster</div><div class="ext-item">Auth Service</div><div class="ext-item">Content API</div><div class="ext-item">Progress API</div><div class="ext-item">Sync API</div></div>
+    <div class="ext-card"><div class="ext-title">AWS Backend</div><div class="ext-item">ALB (Capetown)</div><div class="ext-item">EKS API Cluster</div><div class="ext-item">Auth Service</div><div class="ext-item">Content API</div><div class="ext-item">Progress API</div><div class="ext-item">Sync API</div></div>
     <div class="ext-card"><div class="ext-title">Content Delivery</div><div class="ext-item">VdoCipher DRM</div><div class="ext-item">AWS S3</div><div class="ext-item">CloudFront CDN</div></div>
-    <div class="ext-card"><div class="ext-title">Database</div><div class="ext-item">MongoDB Replica</div><div class="ext-item">users collection</div><div class="ext-item">content_structure</div><div class="ext-item">progress</div><div class="ext-item">usage_logs</div></div>
-    <div class="ext-card"><div class="ext-title">Auth & Messaging</div><div class="ext-item">Twilio / SMSPortal OTP</div><div class="ext-item">Firebase FCM</div><div class="ext-item">Google Sign-In</div></div>
+    <div class="ext-card"><div class="ext-title">Database</div><div class="ext-item">MongoDB Replica</div><div class="ext-item">users collection</div><div class="ext-item">contents structure</div><div class="ext-item">progress</div><div class="ext-item">usage_logs</div></div>
+    <div class="ext-card"><div class="ext-title">Auth & Messaging</div><div class="ext-item">Twilio / SMSPortal OTP</div><div class="ext-item">Firebase FCM</div></div>
     <div class="ext-card"><div class="ext-title">Analytics & Ads</div><div class="ext-item">Firebase Analytics</div><div class="ext-item">PostHog</div><div class="ext-item">Google AdMob</div><div class="ext-item">InMobi Mediation</div></div>
-    <div class="ext-card"><div class="ext-title">Platform SDKs</div><div class="ext-item">Google Play Billing</div><div class="ext-item">Play Core (Updates)</div><div class="ext-item">Google Cast</div><div class="ext-item">Lottie Animations</div></div>
+    <div class="ext-card"><div class="ext-title">Platform SDKs</div><div class="ext-item">Google Play Billing</div><div class="ext-item">Play Core (Updates)</div><div class="ext-item">Lottie Animations</div></div>
   </div>
 </div>
 
@@ -709,7 +707,7 @@ body {
 <div class="phase-grid">
   <div class="phase p1"><div class="phase-num">Phase 1 · One-time Online</div><div class="phase-title">Device Activation</div><div class="chips"><div class="chip c-blue">microSD Config Read</div><div class="chip c-blue">orgCode Validation</div><div class="chip c-blue">POST /installation</div><div class="chip c-blue">GET devices/check</div><div class="chip c-dim">InstallationManager</div><div class="chip c-dim">InstallationRepository</div></div><div class="section-label" style="margin-top:10px">Validates against</div><div class="chips"><div class="chip c-blue">MongoDB devices</div><div class="chip c-blue">MongoDB organizations</div></div></div>
   <div class="phase p2"><div class="phase-num">Phase 2 · Fully Offline</div><div class="phase-title">Content Consumption</div><div class="chips"><div class="chip c-green">microSD Content Read</div><div class="chip c-green">AWS Enc SDK encrypted</div><div class="chip c-green">Video (VdoCipher offline)</div><div class="chip c-green">Interactive (NanoHTTPD)</div><div class="chip c-green">Practice Tests (WebView)</div><div class="chip c-green">Exam Papers (WebView)</div></div><div class="section-label" style="margin-top:10px">Progress stored locally</div><div class="chips"><div class="chip c-amber">Room DB (SQLite)</div><div class="chip c-amber">isSynced = false</div></div></div>
-  <div class="phase p3"><div class="phase-num">Phase 3 · On Wi-Fi</div><div class="phase-title">Offline → Online Sync</div><div class="chips"><div class="chip c-teal">NetworkLiveData detects</div><div class="chip c-teal">WorkManager triggers</div><div class="chip c-teal">UserActivitySyncWorker</div><div class="chip c-teal">KiteRewardsSyncWorker</div><div class="chip c-teal">PracticeTestSyncWorker</div></div><div class="section-label" style="margin-top:10px">Writes to MongoDB</div><div class="chips"><div class="chip c-teal">progress collection</div><div class="chip c-teal">usage_logs collection</div><div class="chip c-teal">sync_records (batchId)</div></div></div>
+  <div class="phase p3"><div class="phase-num">Phase 3 · On Internet</div><div class="phase-title">Offline → Online Sync</div><div class="chips"><div class="chip c-teal">NetworkLiveData detects</div><div class="chip c-teal">WorkManager triggers</div><div class="chip c-teal">UserActivitySyncWorker</div><div class="chip c-teal">KiteRewardsSyncWorker</div><div class="chip c-teal">PracticeTestSyncWorker</div></div><div class="section-label" style="margin-top:10px">Writes to MongoDB</div><div class="chips"><div class="chip c-teal">progress collection</div><div class="chip c-teal">usage_logs collection</div><div class="chip c-teal">sync_records (batchId)</div></div></div>
 </div>
 <div class="arch-main">
   <div>
@@ -740,11 +738,11 @@ body {
     <div class="arrow-row"><div class="arr-line"></div><div class="arr-tip"></div><div class="arr-lbl">Room DAOs (local) · Retrofit (sync-time only)</div><div class="arr-line"></div><div class="arr-tip"></div></div>
     <div class="two-col">
       <div class="card"><div class="card-title c-amber-t">③ Local Storage</div><div class="section-label">Room DB (AppDatabase v28)</div><div class="chips"><div class="chip c-amber">UserDao</div><div class="chip c-amber">AssetDao</div><div class="chip c-amber">UserActivityDao</div><div class="chip c-amber">PracticeTestDao</div><div class="chip c-amber">KiteRewardsDao</div><div class="chip c-amber">InstallationDao</div><div class="chip c-amber">VideoPlaybackInfoDao</div></div><div class="divider"></div><div class="section-label">Encrypted Prefs</div><div class="chips"><div class="chip c-orange">EncryptedPrefUtil</div><div class="chip c-orange">Auth Token</div></div></div>
-      <div class="card"><div class="card-title c-teal-t">④ Sync-time Remote</div><div class="section-label">API Services (Wi-Fi only)</div><div class="chips"><div class="chip c-teal">BizSignInService</div><div class="chip c-teal">InstallationService</div><div class="chip c-teal">SDCardAuthService</div><div class="chip c-teal">UserActivityService</div><div class="chip c-teal">KiteRewardsService</div><div class="chip c-teal">PracticeTestAPIService</div></div><div class="divider"></div><div class="section-label">WorkManager Workers</div><div class="chips"><div class="chip c-teal">UserActivitySyncWorker</div><div class="chip c-teal">KiteRewardsSyncWorker</div><div class="chip c-teal">PracticeTestSyncWorker</div></div></div>
+      <div class="card"><div class="card-title c-teal-t">④ Sync-time Remote</div><div class="section-label">API Services (If Internet)</div><div class="chips"><div class="chip c-teal">BizSignInService</div><div class="chip c-teal">InstallationService</div><div class="chip c-teal">SDCardAuthService</div><div class="chip c-teal">UserActivityService</div><div class="chip c-teal">KiteRewardsService</div><div class="chip c-teal">PracticeTestAPIService</div></div><div class="divider"></div><div class="section-label">WorkManager Workers</div><div class="chips"><div class="chip c-teal">UserActivitySyncWorker</div><div class="chip c-teal">KiteRewardsSyncWorker</div><div class="chip c-teal">PracticeTestSyncWorker</div></div></div>
     </div>
   </div>
   <div>
-    <div class="right-card"><div class="right-title">AWS Backend</div><div class="right-item">ALB (Mumbai region)</div><div class="right-item">Offline Sync API</div><div class="right-item">Auth Service</div><div class="right-item">Installation Service</div></div>
+    <div class="right-card"><div class="right-title">AWS Backend</div><div class="right-item">ALB (Capetown region)</div><div class="right-item">Offline Sync API</div><div class="right-item">Auth Service</div><div class="right-item">Installation Service</div></div>
     <div class="right-card"><div class="right-title">MongoDB (sync target)</div><div class="right-item">users</div><div class="right-item">devices</div><div class="right-item">organizations</div><div class="right-item">progress</div><div class="right-item">usage_logs</div><div class="right-item">installations</div><div class="right-item">sync_records</div></div>
     <div class="right-card"><div class="right-title">Content Encryption</div><div class="right-item">educli CLI tool</div><div class="right-item">AWS Encryption SDK</div><div class="right-item">KMS (af-south-1)</div><div class="right-item">Pack creation time</div></div>
     <div class="right-card"><div class="right-title">Security Controls</div><div class="right-item">AWS Enc SDK (content)</div><div class="right-item">DateTamperUtil</div><div class="right-item">SD card auth</div><div class="right-item">Device limit check</div></div>
@@ -752,7 +750,7 @@ body {
   </div>
 </div>
 <div class="flow-bar"><div class="flow-bar-title">Operational Flow</div><div class="flow-steps"><div class="fs fs-b">① Insert microSD</div><div class="fa">→</div><div class="fs fs-b">② Read orgCode config</div><div class="fa">→</div><div class="fs fs-b">③ One-time activation<br><span style="font-weight:400;font-size:9px">POST /installation</span></div><div class="fa">→</div><div class="fs fs-g">④ Fully Offline Mode</div><div class="fa">→</div><div class="fs fs-a">⑤ Play content<br><span style="font-weight:400;font-size:9px">AWS Enc SDK decrypt</span></div><div class="fa">→</div><div class="fs fs-a">⑥ Progress → Room DB<br><span style="font-weight:400;font-size:9px">isSynced=false</span></div><div class="fa">→</div><div class="fs fs-t">⑦ Wi-Fi sync<br><span style="font-weight:400;font-size:9px">WorkManager flush</span></div></div></div>
-<footer>Edukite Technologies · Android Org/School App Architecture · APK Analysis + System Architecture v1.5 · March 2026</footer>
+<footer>Edukite · Android Org/School App Architecture · APK Analysis + System Architecture v1.5 · March 2026</footer>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -771,22 +769,22 @@ body {
 <div class="arch-main">
   <div>
     <div class="disk-box"><div class="disk-title">💽 Local Disk Content Layer — educli-encrypted (AWS Encryption SDK)</div><div class="two-col"><div><div class="sub-label">Content Types Stored</div><div class="chips"><div class="chip ch-amber">Video Files (MP4/encrypted)</div><div class="chip ch-amber">HTML5 Interactive ZIPs</div><div class="chip ch-amber">Practice Test ZIPs</div><div class="chip ch-amber">Exam Paper ZIPs</div><div class="chip ch-amber">Thumbnails & Assets</div></div></div><div><div class="sub-label">Content Structure</div><div class="chips"><div class="chip ch-green">Grade → Subject</div><div class="chip ch-green">Topic → Lesson</div><div class="chip ch-green">manifest.json</div><div class="chip ch-green">content_structure.json</div></div></div></div></div>
-    <div class="card c-blue-b"><div class="card-title ct-blue">① One-time Device Activation (requires internet)</div><div class="two-col"><div><div class="sub-label">Activation Flow</div><div class="chips"><div class="chip ch-blue">Device fingerprint generation</div><div class="chip ch-blue">POST /api/activation</div><div class="chip ch-blue">Org code validation</div><div class="chip ch-blue">Activation token saved</div></div></div><div><div class="sub-label">Validated against</div><div class="chips"><div class="chip ch-blue">MongoDB: devices</div><div class="chip ch-blue">MongoDB: organizations</div><div class="chip ch-blue">Device limit check</div></div></div></div></div>
+    <div class="card c-blue-b"><div class="card-title ct-blue">① One-time Device Activation (requires internet)</div><div class="two-col"><div><div class="sub-label">Activation Flow</div><div class="chips"><div class="chip ch-blue">Device generation</div><div class="chip ch-blue">POST /api/activation</div><div class="chip ch-blue">Org code validation</div><div class="chip ch-blue">Activation token saved</div></div></div><div><div class="sub-label">Validated against</div><div class="chips"><div class="chip ch-blue">MongoDB: devices</div><div class="chip ch-blue">MongoDB: organizations</div><div class="chip ch-blue">Device limit check</div></div></div></div></div>
     <div class="arrow-row"><div class="a-line"></div><div class="a-tip"></div><div class="a-lbl">offline after this point</div><div class="a-line"></div><div class="a-tip"></div></div>
     <div class="card c-violet-b"><div class="card-title ct-violet">② Offline Content Loop</div><div class="two-col"><div><div class="sub-label">Content Delivery</div><div class="chips"><div class="chip ch-violet">Local HTTP server serves HTML5</div><div class="chip ch-violet">Video from local disk</div><div class="chip ch-violet">WebView renders activities</div><div class="chip ch-violet">No network required</div></div></div><div><div class="sub-label">Progress Tracking</div><div class="chips"><div class="chip ch-amber">SQLite (better-sqlite3)</div><div class="chip ch-amber">lesson_progress table</div><div class="chip ch-amber">usage_events table</div><div class="chip ch-amber">isSynced flag</div></div></div></div></div>
     <div class="arrow-row"><div class="a-line"></div><div class="a-tip"></div><div class="a-lbl">when internet available</div><div class="a-line"></div><div class="a-tip"></div></div>
     <div class="card c-green-b"><div class="card-title ct-green">③ Sync Bridge (internet detected)</div><div class="two-col"><div><div class="sub-label">Sync Process</div><div class="chips"><div class="chip ch-green">Network change listener</div><div class="chip ch-green">Read SQLite (unsynced)</div><div class="chip ch-green">Batch payload build</div><div class="chip ch-green">POST /api/sync (batchId UUID)</div></div></div><div><div class="sub-label">Idempotency</div><div class="chips"><div class="chip ch-green">batchId prevents duplicate writes</div><div class="chip ch-green">Mark isSynced=true on success</div><div class="chip ch-green">Retry on failure</div></div></div></div></div>
   </div>
   <div>
-    <div class="r-card"><div class="r-title">AWS Backend</div><div class="r-item">ALB (Mumbai region)</div><div class="r-item">EKS API Cluster</div><div class="r-item">Activation API</div><div class="r-item">Offline Sync API</div></div>
+    <div class="r-card"><div class="r-title">AWS Backend</div><div class="r-item">ALB (Capetown region)</div><div class="r-item">EKS API Cluster</div><div class="r-item">Activation API</div><div class="r-item">Offline Sync API</div></div>
     <div class="r-card"><div class="r-title">MongoDB (sync target)</div><div class="r-item">devices collection</div><div class="r-item">organizations</div><div class="r-item">progress</div><div class="r-item">usage_logs</div><div class="r-item">sync_records</div></div>
     <div class="r-card"><div class="r-title">Content Encryption</div><div class="r-item">educli CLI tool</div><div class="r-item">AWS Encryption SDK</div><div class="r-item">KMS (af-south-1)</div><div class="r-item">Pack creation time</div></div>
     <div class="r-card"><div class="r-title">Tech Stack</div><div class="r-item">Electron (shell)</div><div class="r-item">React / Vue (UI)</div><div class="r-item">Node.js (main proc)</div><div class="r-item">SQLite (local DB)</div><div class="r-item">better-sqlite3</div></div>
-    <div class="r-card"><div class="r-title">Security</div><div class="r-item">Device fingerprint</div><div class="r-item">Activation token</div><div class="r-item">AWS Enc SDK content</div><div class="r-item">nodeIntegration: false</div><div class="r-item">contextIsolation: true</div></div>
+    <div class="r-card"><div class="r-title">Security</div><div class="r-item">Device </div><div class="r-item">Activation token</div><div class="r-item">AWS Enc SDK content</div><div class="r-item">nodeIntegration: false</div><div class="r-item">contextIsolation: true</div></div>
   </div>
 </div>
 <div class="flow-bar"><div class="flow-bar-title">Operational Flow</div><div class="flow-steps"><div class="fs fs-b">① Install app</div><div class="fa">→</div><div class="fs fs-b">② First launch<br><span style="font-weight:400;font-size:9px">load local content</span></div><div class="fa">→</div><div class="fs fs-b">③ One-time activation<br><span style="font-weight:400;font-size:9px">POST /api/activation</span></div><div class="fa">→</div><div class="fs fs-v">④ Offline mode</div><div class="fa">→</div><div class="fs fs-a">⑤ Student uses content<br><span style="font-weight:400;font-size:9px">AWS Enc SDK decrypt</span></div><div class="fa">→</div><div class="fs fs-g">⑥ Internet detected<br><span style="font-weight:400;font-size:9px">sync batch → API</span></div></div></div>
-<footer>Edukite Technologies · Windows Desktop (Electron) App Architecture · System Architecture v1.5 · March 2026</footer>
+<footer>Edukite · Windows Desktop (Electron) App Architecture · System Architecture v1.5 · March 2026</footer>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -826,7 +824,7 @@ body {
   </div>
 </div>
 <div class="flow-bar"><div class="flow-bar-title">Admin Workflow</div><div class="flow-steps"><div class="fs fs-b">① Login (credentials)</div><div class="fa">→</div><div class="fs fs-b">② Dashboard home<br><span style="font-weight:400;font-size:9px">GET analytics overview</span></div><div class="fa">→</div><div class="fs fs-t">③ Manage orgs / devices<br><span style="font-weight:400;font-size:9px">R/W devices, organizations</span></div><div class="fa">→</div><div class="fs fs-t">④ Trigger Moodle sync<br><span style="font-weight:400;font-size:9px">upsert content_structure</span></div><div class="fa">→</div><div class="fs fs-g">⑤ View progress reports<br><span style="font-weight:400;font-size:9px">READ progress + usage_logs</span></div><div class="fa">→</div><div class="fs fs-g">⑥ Export / act on data</div></div></div>
-<footer>Edukite Technologies · Web Admin Dashboard Architecture · System Architecture v1.5 · March 2026</footer>
+<footer>Edukite · Web Admin Dashboard Architecture · System Architecture v1.5 · March 2026</footer>
 </div>
 
 <script>
