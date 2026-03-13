@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Edukite — All Client Applications Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════
+   SHELL — Tab bar + layout
+══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: #05080F;
+  min-height: 100vh;
+}
+
+/* Top masthead */
+.masthead {
+  background: #080C16;
+  border-bottom: 1px solid #1A2340;
+  padding: 16px 28px 0;
+}
+.masthead-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.masthead-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-logo {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #0EA5E9, #6366F1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.brand-name {
+  font-size: 14px; font-weight: 700; color: #E2EBF5;
+}
+.brand-sub {
+  font-size: 10px; color: #4B6080; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px;
+}
+.masthead-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: #334466;
+  text-align: right; line-height: 1.7;
+}
+
+/* Tab bar */
+.tabs {
+  display: flex;
+  gap: 2px;
+  position: relative;
+}
+.tab {
+  padding: 10px 20px 12px;
+  font-size: 11px; font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  transition: all 0.18s ease;
+  display: flex; align-items: center; gap: 7px;
+  white-space: nowrap;
+  color: #4B6080;
+  background: transparent;
+  position: relative;
+  top: 1px;
+}
+.tab:hover { color: #8BB0D0; background: rgba(255,255,255,0.03); }
+.tab .tab-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.tab .tab-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 2px 6px; border-radius: 3px; opacity: 0.7;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Active tab states per app */
+.tab.active { border-color: #1A2340; color: #E2EBF5; }
+.tab-1.active { background: #080C14; border-bottom-color: #080C14; }
+.tab-2.active { background: #07100A; border-bottom-color: #07100A; }
+.tab-3.active { background: #0A0C14; border-bottom-color: #0A0C14; }
+.tab-4.active { background: #080D18; border-bottom-color: #080D18; }
+
+/* Panels */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ══════════════════════════════════════════════
+   APP 1 — ANDROID RETAIL  (original styles)
+══════════════════════════════════════════════ */
+#app1 {
+  --bg: #080C14;
+  --surface: #0D1520;
+  --surface2: #111D2E;
+  --border: #1E3050;
+  --accent: #0EA5E9;
+  --accent2: #38BDF8;
+  --green: #10B981;
+  --amber: #F59E0B;
+  --purple: #8B5CF6;
+  --pink: #EC4899;
+  --text: #E2EBF5;
+  --muted: #64748B;
+  --dim: #334155;
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 32px 28px 48px;
+}
+#app1 .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 36px; }
+#app1 .app-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+#app1 h1 { font-size: 26px; font-weight: 700; color: #fff; line-height: 1.2; }
+#app1 h1 span { color: var(--accent2); }
+#app1 .header-meta { text-align: right; font-size: 11px; color: var(--muted); line-height: 1.8; font-family: 'JetBrains Mono', monospace; }
+#app1 .badge { display: inline-block; background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.3); border-radius: 4px; padding: 3px 8px; font-size: 10px; color: var(--accent2); font-weight: 600; margin-left: 4px; }
+#app1 .arch-wrap { display: grid; grid-template-columns: 220px 1fr 200px; gap: 16px; align-items: start; }
+#app1 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 14px; position: relative; }
+#app1 .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 10px 10px 0 0; }
+#app1 .card.blue::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+#app1 .card.green::before { background: linear-gradient(90deg, #059669, var(--green)); }
+#app1 .card.amber::before { background: linear-gradient(90deg, #D97706, var(--amber)); }
+#app1 .card.purple::before { background: linear-gradient(90deg, #7C3AED, var(--purple)); }
+#app1 .card.pink::before { background: linear-gradient(90deg, #DB2777, var(--pink)); }
+#app1 .card.dim::before { background: linear-gradient(90deg, #334155, #475569); }
+#app1 .card-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+#app1 .card.blue .card-title { color: var(--accent2); }
+#app1 .card.green .card-title { color: var(--green); }
+#app1 .card.amber .card-title { color: var(--amber); }
+#app1 .card.purple .card-title { color: var(--purple); }
+#app1 .card.pink .card-title { color: var(--pink); }
+#app1 .card.dim .card-title { color: #94A3B8; }
+#app1 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+#app1 .chip { border-radius: 5px; padding: 4px 9px; font-size: 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+#app1 .chip-blue   { background: rgba(14,165,233,0.1);  color: var(--accent2); border: 1px solid rgba(14,165,233,0.25); }
+#app1 .chip-green  { background: rgba(16,185,129,0.1);  color: var(--green);   border: 1px solid rgba(16,185,129,0.25); }
+#app1 .chip-amber  { background: rgba(245,158,11,0.1);  color: var(--amber);   border: 1px solid rgba(245,158,11,0.25); }
+#app1 .chip-purple { background: rgba(139,92,246,0.1);  color: var(--purple);  border: 1px solid rgba(139,92,246,0.25); }
+#app1 .chip-pink   { background: rgba(236,72,153,0.1);  color: var(--pink);    border: 1px solid rgba(236,72,153,0.25); }
+#app1 .chip-dim    { background: rgba(71,85,105,0.2);   color: #94A3B8;        border: 1px solid rgba(71,85,105,0.4); }
+#app1 .arrow-block { display: flex; align-items: center; justify-content: center; height: 28px; }
+#app1 .arrow-down { display: flex; flex-direction: column; align-items: center; }
+#app1 .arrow-down .line { width: 2px; height: 14px; background: var(--dim); }
+#app1 .arrow-down .tip { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid var(--dim); }
+#app1 .arrow-label { font-size: 9px; color: var(--muted); font-family: 'JetBrains Mono', monospace; text-align: center; margin: 0 4px; white-space: nowrap; }
+#app1 .layer-row { display: grid; grid-template-columns: 24px 1fr; gap: 8px; align-items: stretch; margin-bottom: 6px; }
+#app1 .layer-num { display: flex; align-items: center; justify-content: center; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; font-size: 9px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+#app1 .ext-card { background: var(--surface2); border: 1px solid var(--dim); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+#app1 .ext-title { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #475569; margin-bottom: 6px; }
+#app1 .ext-item { font-size: 10px; color: #94A3B8; padding: 2px 0; font-family: 'JetBrains Mono', monospace; }
+#app1 .ext-item::before { content: '→ '; color: var(--dim); }
+#app1 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#app1 .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+#app1 .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 6px 0 10px; }
+#app1 .sub-label { font-size: 9px; color: var(--muted); margin-bottom: 5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+#app1 .flow-path { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 20px; }
+#app1 .flow-path-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+#app1 .flow-steps { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+#app1 .flow-step { background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.2); border-radius: 5px; padding: 5px 10px; font-size: 10px; font-weight: 600; color: var(--accent2); white-space: nowrap; }
+#app1 .flow-step.s2 { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.2); color: var(--green); }
+#app1 .flow-step.s3 { background: rgba(139,92,246,0.08); border-color: rgba(139,92,246,0.2); color: var(--purple); }
+#app1 .flow-arrow { color: var(--dim); font-size: 12px; }
+#app1 .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+#app1 .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); }
+#app1 .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+#app1 footer { margin-top: 32px; text-align: center; font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+/* ══════════════════════════════════════════════
+   APP 2 — ANDROID ORG/SCHOOL
+══════════════════════════════════════════════ */
+#app2 {
+  --bg: #07100A;
+  --surface: #0C1A10;
+  --surface2: #101E14;
+  --border: #1A3520;
+  --green1: #22C55E;
+  --green2: #4ADE80;
+  --teal: #2DD4BF;
+  --amber: #FCD34D;
+  --orange: #FB923C;
+  --blue: #60A5FA;
+  --muted: #4B7A5A;
+  --dim: #1E3A26;
+  --text: #DCF5E4;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 32px 28px 48px;
+}
+#app2 .header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-start; }
+#app2 .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; margin-bottom: 8px; }
+#app2 h1 { font-size: 26px; font-weight: 700; color: #fff; }
+#app2 h1 span { color: var(--green2); }
+#app2 .meta { text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.9; }
+#app2 .badge { display: inline-block; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); border-radius: 4px; padding: 2px 7px; font-size: 9px; color: var(--green2); font-weight: 600; margin-left: 3px; }
+#app2 .phase-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+#app2 .phase { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; position: relative; }
+#app2 .phase::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0; }
+#app2 .phase.p1::before { background: linear-gradient(90deg, #0284C7, var(--blue)); }
+#app2 .phase.p2::before { background: linear-gradient(90deg, #16A34A, var(--green2)); }
+#app2 .phase.p3::before { background: linear-gradient(90deg, #0D9488, var(--teal)); }
+#app2 .phase-num { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+#app2 .p1 .phase-num { color: var(--blue); }
+#app2 .p2 .phase-num { color: var(--green2); }
+#app2 .p3 .phase-num { color: var(--teal); }
+#app2 .phase-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+#app2 .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#app2 .chip { border-radius: 4px; padding: 3px 8px; font-size: 10px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
+#app2 .c-blue   { background: rgba(96,165,250,0.1);  color: var(--blue);   border: 1px solid rgba(96,165,250,0.25); }
+#app2 .c-green  { background: rgba(74,222,128,0.1);  color: var(--green2); border: 1px solid rgba(74,222,128,0.25); }
+#app2 .c-teal   { background: rgba(45,212,191,0.1);  color: var(--teal);   border: 1px solid rgba(45,212,191,0.25); }
+#app2 .c-amber  { background: rgba(252,211,77,0.1);  color: var(--amber);  border: 1px solid rgba(252,211,77,0.25); }
+#app2 .c-orange { background: rgba(251,146,60,0.1);  color: var(--orange); border: 1px solid rgba(251,146,60,0.25); }
+#app2 .c-dim    { background: rgba(30,58,38,0.6);    color: #5A8A6A;       border: 1px solid rgba(30,58,38,0.9); }
+#app2 .section-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 8px 0 5px; }
+#app2 .arch-main { display: grid; grid-template-columns: 1fr 240px; gap: 14px; }
+#app2 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+#app2 .card-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+#app2 .c-blue-t { color: var(--blue); } #app2 .c-green-t { color: var(--green2); } #app2 .c-teal-t { color: var(--teal); }
+#app2 .c-amber-t { color: var(--amber); } #app2 .c-orange-t { color: var(--orange); }
+#app2 .arrow-row { display: flex; align-items: center; justify-content: center; gap: 6px; height: 26px; margin: 2px 0; }
+#app2 .arr-line { width: 2px; height: 12px; background: var(--dim); }
+#app2 .arr-tip { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 6px solid var(--dim); }
+#app2 .arr-lbl { font-size: 9px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+#app2 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#app2 .divider { height: 1px; background: var(--dim); margin: 8px 0; }
+#app2 .sdcard-box { background: linear-gradient(135deg, rgba(252,211,77,0.05), rgba(251,146,60,0.05)); border: 1px solid rgba(252,211,77,0.25); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+#app2 .sdcard-title { font-size: 10px; font-weight: 700; color: var(--amber); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+#app2 .right-card { background: var(--surface2); border: 1px solid var(--dim); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+#app2 .right-title { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #3A6A4A; margin-bottom: 6px; }
+#app2 .right-item { font-size: 10px; color: #5A8A6A; padding: 2px 0; font-family: 'IBM Plex Mono', monospace; }
+#app2 .right-item::before { content: '→ '; color: var(--dim); }
+#app2 .flow-bar { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
+#app2 .flow-bar-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green1); margin-bottom: 10px; }
+#app2 .flow-steps { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+#app2 .fs { border-radius: 5px; padding: 5px 10px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+#app2 .fs-b { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.2); color: var(--blue); }
+#app2 .fs-g { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); color: var(--green2); }
+#app2 .fs-t { background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.2); color: var(--teal); }
+#app2 .fs-a { background: rgba(252,211,77,0.1); border: 1px solid rgba(252,211,77,0.2); color: var(--amber); }
+#app2 .fa { color: #1E3A26; font-size: 14px; }
+#app2 footer { margin-top: 28px; text-align: center; font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+
+/* ══════════════════════════════════════════════
+   APP 3 — WINDOWS DESKTOP
+══════════════════════════════════════════════ */
+#app3 {
+  --bg: #0A0C14;
+  --surface: #0F1220;
+  --surface2: #131626;
+  --border: #1E2540;
+  --blue: #4F8EF7;
+  --indigo: #818CF8;
+  --cyan: #22D3EE;
+  --violet: #A78BFA;
+  --rose: #FB7185;
+  --amber: #FBBF24;
+  --green: #34D399;
+  --muted: #4B5A8A;
+  --dim: #1E2540;
+  --text: #CBD5F0;
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 32px 28px 48px;
+}
+#app3 .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+#app3 .tag { font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 2px; color: var(--cyan); text-transform: uppercase; margin-bottom: 8px; }
+#app3 h1 { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; }
+#app3 h1 span { color: var(--indigo); }
+#app3 .meta { text-align: right; font-family: 'Fira Code', monospace; font-size: 10px; color: var(--muted); line-height: 1.9; }
+#app3 .badge { display: inline-block; background: rgba(129,140,248,0.12); border: 1px solid rgba(129,140,248,0.3); border-radius: 4px; padding: 2px 7px; font-size: 9px; color: var(--indigo); font-weight: 600; margin-left: 3px; }
+#app3 .electron-model { display: grid; grid-template-columns: 1fr 36px 1fr; gap: 0; margin-bottom: 16px; align-items: stretch; }
+#app3 .e-process { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; position: relative; }
+#app3 .e-process::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0; }
+#app3 .main-p::before { background: linear-gradient(90deg, #3B82F6, var(--cyan)); }
+#app3 .renderer-p::before { background: linear-gradient(90deg, #7C3AED, var(--violet)); }
+#app3 .e-process-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+#app3 .main-p .e-process-title { color: var(--cyan); }
+#app3 .renderer-p .e-process-title { color: var(--violet); }
+#app3 .ipc-col { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 0; }
+#app3 .ipc-label { font-family: 'Fira Code', monospace; font-size: 8px; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; writing-mode: vertical-rl; transform: rotate(180deg); }
+#app3 .ipc-line { flex: 1; width: 2px; background: linear-gradient(to bottom, var(--blue), var(--violet)); }
+#app3 .ipc-arrow-d { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 6px solid var(--violet); }
+#app3 .ipc-arrow-u { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 6px solid var(--blue); }
+#app3 .arch-main { display: grid; grid-template-columns: 1fr 200px; gap: 14px; }
+#app3 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 12px; position: relative; }
+#app3 .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 10px 10px 0 0; }
+#app3 .c-blue-b::before { background: linear-gradient(90deg, #2563EB, var(--blue)); }
+#app3 .c-violet-b::before { background: linear-gradient(90deg, #6D28D9, var(--violet)); }
+#app3 .c-amber-b::before { background: linear-gradient(90deg, #D97706, var(--amber)); }
+#app3 .c-green-b::before { background: linear-gradient(90deg, #059669, var(--green)); }
+#app3 .c-cyan-b::before { background: linear-gradient(90deg, #0891B2, var(--cyan)); }
+#app3 .c-rose-b::before { background: linear-gradient(90deg, #E11D48, var(--rose)); }
+#app3 .card-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+#app3 .ct-blue { color: var(--blue); } #app3 .ct-violet { color: var(--violet); } #app3 .ct-amber { color: var(--amber); }
+#app3 .ct-green { color: var(--green); } #app3 .ct-cyan { color: var(--cyan); } #app3 .ct-rose { color: var(--rose); }
+#app3 .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#app3 .chip { border-radius: 4px; padding: 3px 8px; font-size: 10px; font-weight: 600; font-family: 'Fira Code', monospace; white-space: nowrap; }
+#app3 .ch-blue   { background: rgba(79,142,247,0.1);  color: var(--blue);   border: 1px solid rgba(79,142,247,0.25); }
+#app3 .ch-violet { background: rgba(167,139,250,0.1); color: var(--violet); border: 1px solid rgba(167,139,250,0.25); }
+#app3 .ch-cyan   { background: rgba(34,211,238,0.1);  color: var(--cyan);   border: 1px solid rgba(34,211,238,0.25); }
+#app3 .ch-amber  { background: rgba(251,191,36,0.1);  color: var(--amber);  border: 1px solid rgba(251,191,36,0.25); }
+#app3 .ch-green  { background: rgba(52,211,153,0.1);  color: var(--green);  border: 1px solid rgba(52,211,153,0.25); }
+#app3 .ch-rose   { background: rgba(251,113,133,0.1); color: var(--rose);   border: 1px solid rgba(251,113,133,0.25); }
+#app3 .ch-dim    { background: rgba(30,37,64,0.8);    color: #4B5A8A;       border: 1px solid rgba(30,37,64,1); }
+#app3 .sub-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 8px 0 5px; }
+#app3 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#app3 .divider { height: 1px; background: var(--dim); margin: 8px 0; }
+#app3 .arrow-row { display: flex; align-items: center; justify-content: center; gap: 6px; height: 24px; }
+#app3 .a-line { width: 2px; height: 12px; background: var(--dim); }
+#app3 .a-tip { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 6px solid var(--dim); }
+#app3 .a-lbl { font-size: 9px; color: var(--muted); font-family: 'Fira Code', monospace; }
+#app3 .disk-box { background: linear-gradient(135deg, rgba(251,191,36,0.04), rgba(52,211,153,0.04)); border: 1px solid rgba(251,191,36,0.2); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+#app3 .disk-title { font-size: 10px; font-weight: 700; color: var(--amber); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+#app3 .r-card { background: var(--surface2); border: 1px solid var(--dim); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+#app3 .r-title { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #334166; margin-bottom: 6px; }
+#app3 .r-item { font-size: 10px; color: #4B5A8A; padding: 2px 0; font-family: 'Fira Code', monospace; }
+#app3 .r-item::before { content: '→ '; color: var(--dim); }
+#app3 .flow-bar { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
+#app3 .flow-bar-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px; }
+#app3 .flow-steps { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+#app3 .fs { border-radius: 5px; padding: 5px 10px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+#app3 .fs-b { background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.2); color: var(--blue); }
+#app3 .fs-v { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2); color: var(--violet); }
+#app3 .fs-a { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2); color: var(--amber); }
+#app3 .fs-g { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: var(--green); }
+#app3 .fa { color: var(--dim); font-size: 14px; }
+#app3 footer { margin-top: 28px; text-align: center; font-size: 10px; color: var(--muted); font-family: 'Fira Code', monospace; }
+
+/* ══════════════════════════════════════════════
+   APP 4 — WEB ADMIN DASHBOARD
+══════════════════════════════════════════════ */
+#app4 {
+  --bg: #080D18;
+  --surface: #0C1428;
+  --surface2: #101A30;
+  --border: #1A2840;
+  --navy: #3B82F6;
+  --blue: #60A5FA;
+  --teal: #2DD4BF;
+  --green: #34D399;
+  --violet: #A78BFA;
+  --amber: #FCD34D;
+  --rose: #F87171;
+  --muted: #3A5070;
+  --dim: #1A2840;
+  --text: #C8D8F0;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 32px 28px 48px;
+}
+#app4 .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+#app4 .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; margin-bottom: 8px; }
+#app4 h1 { font-size: 26px; font-weight: 700; color: #fff; line-height: 1.2; }
+#app4 h1 span { color: var(--blue); }
+#app4 .meta { text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.9; }
+#app4 .badge { display: inline-block; background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.3); border-radius: 4px; padding: 2px 7px; font-size: 9px; color: var(--blue); font-weight: 600; margin-left: 3px; }
+#app4 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 12px; position: relative; }
+#app4 .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 10px 10px 0 0; }
+#app4 .c-navy-b::before { background: linear-gradient(90deg, #1D4ED8, var(--navy)); }
+#app4 .c-blue-b::before { background: linear-gradient(90deg, #2563EB, var(--blue)); }
+#app4 .c-teal-b::before { background: linear-gradient(90deg, #0D9488, var(--teal)); }
+#app4 .c-green-b::before { background: linear-gradient(90deg, #059669, var(--green)); }
+#app4 .c-violet-b::before { background: linear-gradient(90deg, #6D28D9, var(--violet)); }
+#app4 .c-amber-b::before { background: linear-gradient(90deg, #D97706, var(--amber)); }
+#app4 .c-rose-b::before { background: linear-gradient(90deg, #DC2626, var(--rose)); }
+#app4 .card-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+#app4 .ct-navy { color: var(--navy); } #app4 .ct-blue { color: var(--blue); } #app4 .ct-teal { color: var(--teal); }
+#app4 .ct-green { color: var(--green); } #app4 .ct-violet { color: var(--violet); }
+#app4 .ct-amber { color: var(--amber); } #app4 .ct-rose { color: var(--rose); }
+#app4 .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+#app4 .chip { border-radius: 4px; padding: 3px 8px; font-size: 10px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
+#app4 .ch-blue   { background: rgba(96,165,250,0.1);  color: var(--blue);   border: 1px solid rgba(96,165,250,0.25); }
+#app4 .ch-teal   { background: rgba(45,212,191,0.1);  color: var(--teal);   border: 1px solid rgba(45,212,191,0.25); }
+#app4 .ch-green  { background: rgba(52,211,153,0.1);  color: var(--green);  border: 1px solid rgba(52,211,153,0.25); }
+#app4 .ch-violet { background: rgba(167,139,250,0.1); color: var(--violet); border: 1px solid rgba(167,139,250,0.25); }
+#app4 .ch-amber  { background: rgba(252,211,77,0.1);  color: var(--amber);  border: 1px solid rgba(252,211,77,0.25); }
+#app4 .ch-rose   { background: rgba(248,113,113,0.1); color: var(--rose);   border: 1px solid rgba(248,113,113,0.25); }
+#app4 .ch-dim    { background: rgba(26,40,64,0.8);    color: #3A5070;       border: 1px solid rgba(26,40,64,1); }
+#app4 .sub-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 8px 0 5px; }
+#app4 .arch-main { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+#app4 .arrow-row { display: flex; align-items: center; justify-content: center; gap: 6px; height: 24px; }
+#app4 .a-line { width: 2px; height: 12px; background: var(--dim); }
+#app4 .a-tip { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 6px solid var(--dim); }
+#app4 .a-lbl { font-size: 9px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+#app4 .ui-panels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+#app4 .ui-panel { background: var(--surface2); border: 1px solid var(--dim); border-radius: 7px; padding: 10px; text-align: center; }
+#app4 .ui-panel-icon { font-size: 18px; margin-bottom: 4px; }
+#app4 .ui-panel-title { font-size: 10px; font-weight: 700; color: var(--blue); margin-bottom: 3px; }
+#app4 .ui-panel-desc { font-size: 9px; color: var(--muted); line-height: 1.4; }
+#app4 .matrix { width: 100%; border-collapse: collapse; font-size: 10px; font-family: 'IBM Plex Mono', monospace; }
+#app4 .matrix th { text-align: left; padding: 5px 8px; font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--dim); }
+#app4 .matrix td { padding: 5px 8px; border-bottom: 1px solid rgba(26,40,64,0.6); color: #7A9AC0; }
+#app4 .matrix tr:last-child td { border-bottom: none; }
+#app4 .rw { background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.25); color: var(--teal); border-radius: 3px; padding: 1px 5px; font-weight: 700; }
+#app4 .ro { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); color: var(--green); border-radius: 3px; padding: 1px 5px; font-weight: 700; }
+#app4 .moodle-box { background: linear-gradient(135deg, rgba(167,139,250,0.05), rgba(45,212,191,0.05)); border: 1px solid rgba(167,139,250,0.2); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+#app4 .moodle-title { font-size: 10px; font-weight: 700; color: var(--violet); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+#app4 .flow-bar { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
+#app4 .flow-bar-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+#app4 .flow-steps { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+#app4 .fs { border-radius: 5px; padding: 5px 10px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+#app4 .fs-b { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.2); color: var(--blue); }
+#app4 .fs-t { background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.2); color: var(--teal); }
+#app4 .fs-g { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: var(--green); }
+#app4 .fa { color: var(--dim); font-size: 14px; }
+#app4 footer { margin-top: 28px; text-align: center; font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     MASTHEAD + TABS
+══════════════════════════════════════════ -->
+<div class="masthead">
+  <div class="masthead-top">
+    <div class="masthead-brand">
+      <div class="brand-logo">🪁</div>
+      <div>
+        <div class="brand-name">Edukite Learning Services</div>
+        <div class="brand-sub">CLIENT APPLICATION ARCHITECTURE · ALL 4 APPS</div>
+      </div>
+    </div>
+    <div class="masthead-meta">
+      APK v2.4.14 · System Doc v1.5<br>
+      March 2026 · Confidential · Technical DD
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab tab-1 active" onclick="switchTab(1)">
+      <div class="tab-dot" style="background:#0EA5E9"></div>
+      📱 Android Retail
+      <span class="tab-badge" style="background:rgba(14,165,233,0.1);color:#38BDF8;border:1px solid rgba(14,165,233,0.2)">Always Online</span>
+    </div>
+    <div class="tab tab-2" onclick="switchTab(2)">
+      <div class="tab-dot" style="background:#22C55E"></div>
+      🏫 Android Org/School
+      <span class="tab-badge" style="background:rgba(34,197,94,0.1);color:#4ADE80;border:1px solid rgba(34,197,94,0.2)">Offline · microSD</span>
+    </div>
+    <div class="tab tab-3" onclick="switchTab(3)">
+      <div class="tab-dot" style="background:#818CF8"></div>
+      💻 Windows Desktop
+      <span class="tab-badge" style="background:rgba(129,140,248,0.1);color:#A78BFA;border:1px solid rgba(129,140,248,0.2)">Electron · Offline</span>
+    </div>
+    <div class="tab tab-4" onclick="switchTab(4)">
+      <div class="tab-dot" style="background:#3B82F6"></div>
+      🌐 Web Admin Dashboard
+      <span class="tab-badge" style="background:rgba(59,130,246,0.1);color:#60A5FA;border:1px solid rgba(59,130,246,0.2)">Always Online</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PANEL 1 — ANDROID RETAIL
+══════════════════════════════════════════ -->
+<div id="app1" class="panel active">
+
+<div class="header">
+  <div class="header-left">
+    <div class="app-tag">Edukite · Client Application 1 of 4</div>
+    <h1>Android <span>Retail App</span><br>High-Level Architecture</h1>
+  </div>
+  <div class="header-meta">
+    Package: com.edukitelearning.learningapp<br>
+    Version: 2.4.14 · Kotlin · MVVM<br>
+    <span class="badge">Always Online</span>
+    <span class="badge">Individual Students</span>
+  </div>
+</div>
+
+<div class="arch-wrap">
+  <!-- LEFT: User & Device -->
+  <div>
+    <div class="card blue">
+      <div class="card-title">User & Device</div>
+      <div class="chips">
+        <div class="chip chip-blue">Android Phone</div>
+        <div class="chip chip-blue">Individual Student</div>
+        <div class="chip chip-dim">Grade 6–12</div>
+      </div>
+    </div>
+    <div class="card green">
+      <div class="card-title">Authentication</div>
+      <div class="chips">
+        <div class="chip chip-green">Phone Number</div>
+        <div class="chip chip-green">OTP via SMS</div>
+        <div class="chip chip-green">Google Sign-In</div>
+        <div class="chip chip-dim">Guest Mode</div>
+        <div class="chip chip-dim">Org / Biz Login</div>
+      </div>
+    </div>
+    <div class="card amber">
+      <div class="card-title">Registration</div>
+      <div class="chips">
+        <div class="chip chip-amber">Name Entry</div>
+        <div class="chip chip-amber">Grade Selection</div>
+        <div class="chip chip-amber">Country Select</div>
+        <div class="chip chip-dim">Promo Code</div>
+      </div>
+    </div>
+    <div class="card purple">
+      <div class="card-title">Subscription</div>
+      <div class="chips">
+        <div class="chip chip-purple">Google Play Billing v6.1</div>
+        <div class="chip chip-purple">Product List</div>
+        <div class="chip chip-purple">Purchase / Cancel</div>
+        <div class="chip chip-dim">Promo Codes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIDDLE: App Architecture Layers -->
+  <div>
+    <div class="card blue">
+      <div class="card-title">① UI / Presentation Layer</div>
+      <div class="sub-label">Activities & Fragments (DataBinding + ViewBinding)</div>
+      <div class="two-col">
+        <div>
+          <div class="sub-label">Content Navigation</div>
+          <div class="chips">
+            <div class="chip chip-blue">SplashActivity</div>
+            <div class="chip chip-blue">HomeActivity</div>
+            <div class="chip chip-blue">NavigationActivity</div>
+            <div class="chip chip-blue">SearchAssetActivity</div>
+            <div class="chip chip-blue">ExamCategoryFragment</div>
+          </div>
+        </div>
+        <div>
+          <div class="sub-label">Content Players</div>
+          <div class="chips">
+            <div class="chip chip-purple">AssetPlayerActivity</div>
+            <div class="chip chip-purple">VideoPlayerFragment</div>
+            <div class="chip chip-purple">InteractiveFragment</div>
+            <div class="chip chip-purple">PracticeTestFragment</div>
+            <div class="chip chip-purple">ExamPlayerFragment</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+      <div class="two-col">
+        <div>
+          <div class="sub-label">User / Social</div>
+          <div class="chips">
+            <div class="chip chip-green">EditProfileActivity</div>
+            <div class="chip chip-green">KiteDashboardActivity</div>
+            <div class="chip chip-green">LeaderboardActivity</div>
+            <div class="chip chip-green">StreakActivity</div>
+          </div>
+        </div>
+        <div>
+          <div class="sub-label">Commerce & Settings</div>
+          <div class="chips">
+            <div class="chip chip-amber">BillingActivity</div>
+            <div class="chip chip-amber">SubscriptionFragment</div>
+            <div class="chip chip-amber">SettingsFragment</div>
+            <div class="chip chip-amber">NotificationActivity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-block"><div class="arrow-down"><div class="line"></div><div class="tip"></div></div><div class="arrow-label">observe LiveData · call ViewModel methods</div><div class="arrow-down"><div class="line"></div><div class="tip"></div></div></div>
+
+    <div class="card green">
+      <div class="card-title">② ViewModel Layer — MVVM · Hilt · Coroutines · LiveData</div>
+      <div class="three-col">
+        <div class="chips">
+          <div class="chip chip-green">SplashViewModel</div>
+          <div class="chip chip-green">OTPViewModel</div>
+          <div class="chip chip-green">HomeViewModel</div>
+          <div class="chip chip-green">ContentViewModel</div>
+        </div>
+        <div class="chips">
+          <div class="chip chip-green">PlayVideoViewModel</div>
+          <div class="chip chip-green">PracticeTestViewModel</div>
+          <div class="chip chip-green">KiteRewardsViewModel</div>
+          <div class="chip chip-green">LeaderboardViewModel</div>
+        </div>
+        <div class="chips">
+          <div class="chip chip-green">SubscriptionViewModel</div>
+          <div class="chip chip-green">DownloadsViewModel</div>
+          <div class="chip chip-green">NotificationViewModel</div>
+          <div class="chip chip-green">UserActivityViewModel</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-block"><div class="arrow-down"><div class="line"></div><div class="tip"></div></div><div class="arrow-label">Flow&lt;Resource&lt;T&gt;&gt; · suspend functions</div><div class="arrow-down"><div class="line"></div><div class="tip"></div></div></div>
+
+    <div class="card purple">
+      <div class="card-title">③ Repository Layer — Single Source of Truth · Cache-first Strategy</div>
+      <div class="two-col">
+        <div class="chips">
+          <div class="chip chip-purple">UserRepository</div>
+          <div class="chip chip-purple">OTPRepository</div>
+          <div class="chip chip-purple">ContentRepository</div>
+          <div class="chip chip-purple">AssetRepository</div>
+          <div class="chip chip-purple">PlayVideoRepository</div>
+          <div class="chip chip-purple">PracticeTestRepository</div>
+        </div>
+        <div class="chips">
+          <div class="chip chip-purple">KiteRewardsRepository</div>
+          <div class="chip chip-purple">SubscriptionRepository</div>
+          <div class="chip chip-purple">DownloadFileRepository</div>
+          <div class="chip chip-purple">InstallationRepository</div>
+          <div class="chip chip-purple">GlobalConfigRepository</div>
+          <div class="chip chip-purple">UserActivityRepository</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-block"><div class="arrow-down"><div class="line"></div><div class="tip"></div></div><div class="arrow-label">Room DAOs · Retrofit API Services</div><div class="arrow-down"><div class="line"></div><div class="tip"></div></div></div>
+
+    <div class="two-col">
+      <div class="card amber">
+        <div class="card-title">④ Local — Room DB (v28)</div>
+        <div class="chips">
+          <div class="chip chip-amber">AppDatabase</div>
+          <div class="chip chip-amber">UserDao</div>
+          <div class="chip chip-amber">AssetDao</div>
+          <div class="chip chip-amber">UserActivityDao</div>
+          <div class="chip chip-amber">PracticeTestDao</div>
+          <div class="chip chip-amber">KiteRewardsDao</div>
+          <div class="chip chip-amber">DownloadsDao</div>
+          <div class="chip chip-amber">GlobalConfigDao</div>
+          <div class="chip chip-amber">VideoPlaybackInfoDao</div>
+        </div>
+      </div>
+      <div class="card pink">
+        <div class="card-title">④ Remote — Retrofit + OkHttp3</div>
+        <div class="chips">
+          <div class="chip chip-pink">OTPService</div>
+          <div class="chip chip-pink">ContentAPIService</div>
+          <div class="chip chip-pink">PlayVideoService</div>
+          <div class="chip chip-pink">UserActivityService</div>
+          <div class="chip chip-pink">SubscriptionService</div>
+          <div class="chip chip-pink">KiteRewardsService</div>
+          <div class="chip chip-pink">InstallationService</div>
+          <div class="chip chip-pink">GlobalConfigService</div>
+          <div class="chip chip-pink">EdukiteInterceptor</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card dim" style="margin-top:6px">
+      <div class="card-title">⑤ Background Sync — WorkManager (CONNECTED constraint)</div>
+      <div class="chips">
+        <div class="chip chip-dim">UserActivitySyncWorker</div>
+        <div class="chip chip-dim">KiteRewardsSyncWorker</div>
+        <div class="chip chip-dim">PracticeTestSyncWorker</div>
+        <div class="chip chip-dim">DownloadCommonResourceSyncWorker</div>
+        <div class="chip chip-dim">OfflineProgressHandler</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: External Services -->
+  <div>
+    <div class="ext-card"><div class="ext-title">AWS Backend</div><div class="ext-item">ALB (Mumbai)</div><div class="ext-item">EKS API Cluster</div><div class="ext-item">Auth Service</div><div class="ext-item">Content API</div><div class="ext-item">Progress API</div><div class="ext-item">Sync API</div></div>
+    <div class="ext-card"><div class="ext-title">Content Delivery</div><div class="ext-item">VdoCipher DRM</div><div class="ext-item">AWS S3</div><div class="ext-item">CloudFront CDN</div></div>
+    <div class="ext-card"><div class="ext-title">Database</div><div class="ext-item">MongoDB Replica</div><div class="ext-item">users collection</div><div class="ext-item">content_structure</div><div class="ext-item">progress</div><div class="ext-item">usage_logs</div></div>
+    <div class="ext-card"><div class="ext-title">Auth & Messaging</div><div class="ext-item">Twilio / SMSPortal OTP</div><div class="ext-item">Firebase FCM</div><div class="ext-item">Google Sign-In</div></div>
+    <div class="ext-card"><div class="ext-title">Analytics & Ads</div><div class="ext-item">Firebase Analytics</div><div class="ext-item">PostHog</div><div class="ext-item">Google AdMob</div><div class="ext-item">InMobi Mediation</div></div>
+    <div class="ext-card"><div class="ext-title">Platform SDKs</div><div class="ext-item">Google Play Billing</div><div class="ext-item">Play Core (Updates)</div><div class="ext-item">Google Cast</div><div class="ext-item">Lottie Animations</div></div>
+  </div>
+</div>
+
+<div class="flow-path">
+  <div class="flow-path-title">Primary User Journey</div>
+  <div class="flow-steps">
+    <div class="flow-step">① App Launch</div><div class="flow-arrow">→</div>
+    <div class="flow-step">② OTP Login</div><div class="flow-arrow">→</div>
+    <div class="flow-step s2">③ Registration<br><span style="font-weight:400;font-size:9px">(new users)</span></div><div class="flow-arrow">→</div>
+    <div class="flow-step">④ Home Screen</div><div class="flow-arrow">→</div>
+    <div class="flow-step s3">⑤ Select Subject/Asset</div><div class="flow-arrow">→</div>
+    <div class="flow-step s3">⑥ Video / Interactive<br><span style="font-weight:400;font-size:9px">VdoCipher DRM</span></div><div class="flow-arrow">→</div>
+    <div class="flow-step s2">⑦ Progress Sync<br><span style="font-weight:400;font-size:9px">every 5 min</span></div>
+  </div>
+</div>
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#0EA5E9"></div>UI Layer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10B981"></div>ViewModel</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8B5CF6"></div>Repository</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F59E0B"></div>Local (Room DB)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#EC4899"></div>Remote (Retrofit)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#334155"></div>Background / WorkManager</div>
+</div>
+<footer>Edukite Technologies · Android Retail App Architecture · Derived from APK Analysis v2.4.14 + System Architecture v1.5 · March 2026</footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PANEL 2 — ANDROID ORG/SCHOOL
+══════════════════════════════════════════ -->
+<div id="app2" class="panel">
+<div class="header">
+  <div><div class="tag">Edukite · Client Application 2 of 4</div><h1>Android <span>Org / School App</span><br>High-Level Architecture</h1></div>
+  <div class="meta">Package: com.edukitelearning.learningapp (Org build)<br>Kotlin · Room · VdoCipher · NanoHTTPD<br><span class="badge">Mostly Offline</span><span class="badge">Govt School Students</span><span class="badge">microSD Content</span></div>
+</div>
+<div class="phase-grid">
+  <div class="phase p1"><div class="phase-num">Phase 1 · One-time Online</div><div class="phase-title">Device Activation</div><div class="chips"><div class="chip c-blue">microSD Config Read</div><div class="chip c-blue">orgCode Validation</div><div class="chip c-blue">POST /installation</div><div class="chip c-blue">GET devices/check</div><div class="chip c-dim">InstallationManager</div><div class="chip c-dim">InstallationRepository</div></div><div class="section-label" style="margin-top:10px">Validates against</div><div class="chips"><div class="chip c-blue">MongoDB devices</div><div class="chip c-blue">MongoDB organizations</div></div></div>
+  <div class="phase p2"><div class="phase-num">Phase 2 · Fully Offline</div><div class="phase-title">Content Consumption</div><div class="chips"><div class="chip c-green">microSD Content Read</div><div class="chip c-green">AWS Enc SDK encrypted</div><div class="chip c-green">Video (VdoCipher offline)</div><div class="chip c-green">Interactive (NanoHTTPD)</div><div class="chip c-green">Practice Tests (WebView)</div><div class="chip c-green">Exam Papers (WebView)</div></div><div class="section-label" style="margin-top:10px">Progress stored locally</div><div class="chips"><div class="chip c-amber">Room DB (SQLite)</div><div class="chip c-amber">isSynced = false</div></div></div>
+  <div class="phase p3"><div class="phase-num">Phase 3 · On Wi-Fi</div><div class="phase-title">Offline → Online Sync</div><div class="chips"><div class="chip c-teal">NetworkLiveData detects</div><div class="chip c-teal">WorkManager triggers</div><div class="chip c-teal">UserActivitySyncWorker</div><div class="chip c-teal">KiteRewardsSyncWorker</div><div class="chip c-teal">PracticeTestSyncWorker</div></div><div class="section-label" style="margin-top:10px">Writes to MongoDB</div><div class="chips"><div class="chip c-teal">progress collection</div><div class="chip c-teal">usage_logs collection</div><div class="chip c-teal">sync_records (batchId)</div></div></div>
+</div>
+<div class="arch-main">
+  <div>
+    <div class="sdcard-box">
+      <div class="sdcard-title">🗂 microSD Content Layer — Unique to Org Build</div>
+      <div class="two-col">
+        <div><div class="section-label">SD Card Managers</div><div class="chips"><div class="chip c-amber">SDCardDataManager</div><div class="chip c-amber">SDCardAuthRepository</div><div class="chip c-amber">SDCardEventReceiver</div><div class="chip c-amber">SDCardUtil</div></div></div>
+        <div><div class="section-label">File Security (AWS Enc SDK)</div><div class="chips"><div class="chip c-orange">EdukiteFileInputStream</div><div class="chip c-orange">EdukiteCipherInputStream</div><div class="chip c-orange">CipherUtil (AWS Enc SDK)</div><div class="chip c-orange">SecureFileUtils</div></div></div>
+      </div>
+      <div class="section-label" style="margin-top:8px">Content on SD Card — encrypted by educli at pack creation time</div>
+      <div class="chips"><div class="chip c-amber">Video Files (VdoCipher encrypted)</div><div class="chip c-amber">HTML5 Interactive ZIPs</div><div class="chip c-amber">Practice Test ZIPs</div><div class="chip c-amber">Exam Paper ZIPs</div><div class="chip c-amber">orgCode Config File</div><div class="chip c-amber">contentPackVersion</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title c-blue-t">① UI Layer — Same base as Retail + Org-specific screens</div>
+      <div class="two-col">
+        <div><div class="section-label">Shared with Retail</div><div class="chips"><div class="chip c-blue">AssetPlayerActivity</div><div class="chip c-blue">VideoPlayerFragment</div><div class="chip c-blue">InteractiveFragment</div><div class="chip c-blue">HomeActivity</div><div class="chip c-blue">SettingsFragment</div></div></div>
+        <div><div class="section-label">Org-specific</div><div class="chips"><div class="chip c-orange">BizSignInFragment</div><div class="chip c-orange">DevicesInfoFragment</div><div class="chip c-orange">DownloadsFragment</div><div class="chip c-orange">SDCard Settings</div></div></div>
+      </div>
+    </div>
+    <div class="arrow-row"><div class="arr-line"></div><div class="arr-tip"></div><div class="arr-lbl">observe LiveData · call ViewModel</div><div class="arr-line"></div><div class="arr-tip"></div></div>
+    <div class="card">
+      <div class="card-title c-green-t">② ViewModel + Repository — Hilt DI · Coroutines</div>
+      <div class="two-col">
+        <div><div class="section-label">Key ViewModels</div><div class="chips"><div class="chip c-green">ContentViewModel</div><div class="chip c-green">PlayVideoViewModel</div><div class="chip c-green">InteractiveViewModel</div><div class="chip c-green">UserActivityViewModel</div><div class="chip c-green">DeviceInfoViewModel</div></div></div>
+        <div><div class="section-label">Key Repositories</div><div class="chips"><div class="chip c-green">SDCardAuthRepository</div><div class="chip c-green">InstallationRepository</div><div class="chip c-green">ContentRepository</div><div class="chip c-green">UserActivityRepository</div></div></div>
+      </div>
+    </div>
+    <div class="arrow-row"><div class="arr-line"></div><div class="arr-tip"></div><div class="arr-lbl">Room DAOs (local) · Retrofit (sync-time only)</div><div class="arr-line"></div><div class="arr-tip"></div></div>
+    <div class="two-col">
+      <div class="card"><div class="card-title c-amber-t">③ Local Storage</div><div class="section-label">Room DB (AppDatabase v28)</div><div class="chips"><div class="chip c-amber">UserDao</div><div class="chip c-amber">AssetDao</div><div class="chip c-amber">UserActivityDao</div><div class="chip c-amber">PracticeTestDao</div><div class="chip c-amber">KiteRewardsDao</div><div class="chip c-amber">InstallationDao</div><div class="chip c-amber">VideoPlaybackInfoDao</div></div><div class="divider"></div><div class="section-label">Encrypted Prefs</div><div class="chips"><div class="chip c-orange">EncryptedPrefUtil</div><div class="chip c-orange">Auth Token</div></div></div>
+      <div class="card"><div class="card-title c-teal-t">④ Sync-time Remote</div><div class="section-label">API Services (Wi-Fi only)</div><div class="chips"><div class="chip c-teal">BizSignInService</div><div class="chip c-teal">InstallationService</div><div class="chip c-teal">SDCardAuthService</div><div class="chip c-teal">UserActivityService</div><div class="chip c-teal">KiteRewardsService</div><div class="chip c-teal">PracticeTestAPIService</div></div><div class="divider"></div><div class="section-label">WorkManager Workers</div><div class="chips"><div class="chip c-teal">UserActivitySyncWorker</div><div class="chip c-teal">KiteRewardsSyncWorker</div><div class="chip c-teal">PracticeTestSyncWorker</div></div></div>
+    </div>
+  </div>
+  <div>
+    <div class="right-card"><div class="right-title">AWS Backend</div><div class="right-item">ALB (Mumbai region)</div><div class="right-item">Offline Sync API</div><div class="right-item">Auth Service</div><div class="right-item">Installation Service</div></div>
+    <div class="right-card"><div class="right-title">MongoDB (sync target)</div><div class="right-item">users</div><div class="right-item">devices</div><div class="right-item">organizations</div><div class="right-item">progress</div><div class="right-item">usage_logs</div><div class="right-item">installations</div><div class="right-item">sync_records</div></div>
+    <div class="right-card"><div class="right-title">Content Encryption</div><div class="right-item">educli CLI tool</div><div class="right-item">AWS Encryption SDK</div><div class="right-item">KMS (af-south-1)</div><div class="right-item">Pack creation time</div></div>
+    <div class="right-card"><div class="right-title">Security Controls</div><div class="right-item">AWS Enc SDK (content)</div><div class="right-item">DateTamperUtil</div><div class="right-item">SD card auth</div><div class="right-item">Device limit check</div></div>
+    <div class="right-card"><div class="right-title">Firebase (minimal)</div><div class="right-item">FCM (when online)</div><div class="right-item">Analytics (when online)</div></div>
+  </div>
+</div>
+<div class="flow-bar"><div class="flow-bar-title">Operational Flow</div><div class="flow-steps"><div class="fs fs-b">① Insert microSD</div><div class="fa">→</div><div class="fs fs-b">② Read orgCode config</div><div class="fa">→</div><div class="fs fs-b">③ One-time activation<br><span style="font-weight:400;font-size:9px">POST /installation</span></div><div class="fa">→</div><div class="fs fs-g">④ Fully Offline Mode</div><div class="fa">→</div><div class="fs fs-a">⑤ Play content<br><span style="font-weight:400;font-size:9px">AWS Enc SDK decrypt</span></div><div class="fa">→</div><div class="fs fs-a">⑥ Progress → Room DB<br><span style="font-weight:400;font-size:9px">isSynced=false</span></div><div class="fa">→</div><div class="fs fs-t">⑦ Wi-Fi sync<br><span style="font-weight:400;font-size:9px">WorkManager flush</span></div></div></div>
+<footer>Edukite Technologies · Android Org/School App Architecture · APK Analysis + System Architecture v1.5 · March 2026</footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PANEL 3 — WINDOWS DESKTOP
+══════════════════════════════════════════ -->
+<div id="app3" class="panel">
+<div class="header">
+  <div><div class="tag">Edukite · Client Application 3 of 4</div><h1>Windows Desktop<br><span>Electron App</span> Architecture</h1></div>
+  <div class="meta">Stack: Electron + React/Vue + Node.js<br>SQLite · Local Disk Content<br><span class="badge">Computer Labs</span><span class="badge">One-time Activation</span><span class="badge">Mostly Offline</span></div>
+</div>
+<div class="electron-model">
+  <div class="e-process main-p"><div class="e-process-title">Main Process (Node.js)</div><div class="sub-label">System & Native Access</div><div class="chips" style="margin-bottom:10px"><div class="chip ch-cyan">app.js / main.js</div><div class="chip ch-cyan">BrowserWindow mgmt</div><div class="chip ch-cyan">ipcMain handlers</div><div class="chip ch-cyan">Auto-updater</div></div><div class="sub-label">File System</div><div class="chips" style="margin-bottom:10px"><div class="chip ch-amber">Local Disk Content Reader</div><div class="chip ch-amber">Content ZIP extractor</div><div class="chip ch-amber">Local HTTP server</div></div><div class="sub-label">Network (sync-time)</div><div class="chips"><div class="chip ch-blue">Axios / node-fetch</div><div class="chip ch-blue">Activation API caller</div><div class="chip ch-blue">Sync API caller</div></div></div>
+  <div class="ipc-col"><div class="ipc-arrow-u"></div><div class="ipc-line"></div><div class="ipc-label">ipcRenderer / ipcMain</div><div class="ipc-line"></div><div class="ipc-arrow-d"></div></div>
+  <div class="e-process renderer-p"><div class="e-process-title">Renderer Process (React / Vue)</div><div class="sub-label">UI Screens</div><div class="chips" style="margin-bottom:10px"><div class="chip ch-violet">Activation Screen</div><div class="chip ch-violet">Home / Subject List</div><div class="chip ch-violet">Content Player</div><div class="chip ch-violet">Progress View</div><div class="chip ch-violet">Settings Screen</div></div><div class="sub-label">State Management</div><div class="chips" style="margin-bottom:10px"><div class="chip ch-violet">Redux / Vuex Store</div><div class="chip ch-violet">Local State (React hooks)</div></div><div class="sub-label">Content Rendering</div><div class="chips"><div class="chip ch-violet">WebView / iframe</div><div class="chip ch-violet">HTML5 Activities</div><div class="chip ch-violet">Video Player (local)</div></div></div>
+</div>
+<div class="arch-main">
+  <div>
+    <div class="disk-box"><div class="disk-title">💽 Local Disk Content Layer — educli-encrypted (AWS Encryption SDK)</div><div class="two-col"><div><div class="sub-label">Content Types Stored</div><div class="chips"><div class="chip ch-amber">Video Files (MP4/encrypted)</div><div class="chip ch-amber">HTML5 Interactive ZIPs</div><div class="chip ch-amber">Practice Test ZIPs</div><div class="chip ch-amber">Exam Paper ZIPs</div><div class="chip ch-amber">Thumbnails & Assets</div></div></div><div><div class="sub-label">Content Structure</div><div class="chips"><div class="chip ch-green">Grade → Subject</div><div class="chip ch-green">Topic → Lesson</div><div class="chip ch-green">manifest.json</div><div class="chip ch-green">content_structure.json</div></div></div></div></div>
+    <div class="card c-blue-b"><div class="card-title ct-blue">① One-time Device Activation (requires internet)</div><div class="two-col"><div><div class="sub-label">Activation Flow</div><div class="chips"><div class="chip ch-blue">Device fingerprint generation</div><div class="chip ch-blue">POST /api/activation</div><div class="chip ch-blue">Org code validation</div><div class="chip ch-blue">Activation token saved</div></div></div><div><div class="sub-label">Validated against</div><div class="chips"><div class="chip ch-blue">MongoDB: devices</div><div class="chip ch-blue">MongoDB: organizations</div><div class="chip ch-blue">Device limit check</div></div></div></div></div>
+    <div class="arrow-row"><div class="a-line"></div><div class="a-tip"></div><div class="a-lbl">offline after this point</div><div class="a-line"></div><div class="a-tip"></div></div>
+    <div class="card c-violet-b"><div class="card-title ct-violet">② Offline Content Loop</div><div class="two-col"><div><div class="sub-label">Content Delivery</div><div class="chips"><div class="chip ch-violet">Local HTTP server serves HTML5</div><div class="chip ch-violet">Video from local disk</div><div class="chip ch-violet">WebView renders activities</div><div class="chip ch-violet">No network required</div></div></div><div><div class="sub-label">Progress Tracking</div><div class="chips"><div class="chip ch-amber">SQLite (better-sqlite3)</div><div class="chip ch-amber">lesson_progress table</div><div class="chip ch-amber">usage_events table</div><div class="chip ch-amber">isSynced flag</div></div></div></div></div>
+    <div class="arrow-row"><div class="a-line"></div><div class="a-tip"></div><div class="a-lbl">when internet available</div><div class="a-line"></div><div class="a-tip"></div></div>
+    <div class="card c-green-b"><div class="card-title ct-green">③ Sync Bridge (internet detected)</div><div class="two-col"><div><div class="sub-label">Sync Process</div><div class="chips"><div class="chip ch-green">Network change listener</div><div class="chip ch-green">Read SQLite (unsynced)</div><div class="chip ch-green">Batch payload build</div><div class="chip ch-green">POST /api/sync (batchId UUID)</div></div></div><div><div class="sub-label">Idempotency</div><div class="chips"><div class="chip ch-green">batchId prevents duplicate writes</div><div class="chip ch-green">Mark isSynced=true on success</div><div class="chip ch-green">Retry on failure</div></div></div></div></div>
+  </div>
+  <div>
+    <div class="r-card"><div class="r-title">AWS Backend</div><div class="r-item">ALB (Mumbai region)</div><div class="r-item">EKS API Cluster</div><div class="r-item">Activation API</div><div class="r-item">Offline Sync API</div></div>
+    <div class="r-card"><div class="r-title">MongoDB (sync target)</div><div class="r-item">devices collection</div><div class="r-item">organizations</div><div class="r-item">progress</div><div class="r-item">usage_logs</div><div class="r-item">sync_records</div></div>
+    <div class="r-card"><div class="r-title">Content Encryption</div><div class="r-item">educli CLI tool</div><div class="r-item">AWS Encryption SDK</div><div class="r-item">KMS (af-south-1)</div><div class="r-item">Pack creation time</div></div>
+    <div class="r-card"><div class="r-title">Tech Stack</div><div class="r-item">Electron (shell)</div><div class="r-item">React / Vue (UI)</div><div class="r-item">Node.js (main proc)</div><div class="r-item">SQLite (local DB)</div><div class="r-item">better-sqlite3</div></div>
+    <div class="r-card"><div class="r-title">Security</div><div class="r-item">Device fingerprint</div><div class="r-item">Activation token</div><div class="r-item">AWS Enc SDK content</div><div class="r-item">nodeIntegration: false</div><div class="r-item">contextIsolation: true</div></div>
+  </div>
+</div>
+<div class="flow-bar"><div class="flow-bar-title">Operational Flow</div><div class="flow-steps"><div class="fs fs-b">① Install app</div><div class="fa">→</div><div class="fs fs-b">② First launch<br><span style="font-weight:400;font-size:9px">load local content</span></div><div class="fa">→</div><div class="fs fs-b">③ One-time activation<br><span style="font-weight:400;font-size:9px">POST /api/activation</span></div><div class="fa">→</div><div class="fs fs-v">④ Offline mode</div><div class="fa">→</div><div class="fs fs-a">⑤ Student uses content<br><span style="font-weight:400;font-size:9px">AWS Enc SDK decrypt</span></div><div class="fa">→</div><div class="fs fs-g">⑥ Internet detected<br><span style="font-weight:400;font-size:9px">sync batch → API</span></div></div></div>
+<footer>Edukite Technologies · Windows Desktop (Electron) App Architecture · System Architecture v1.5 · March 2026</footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PANEL 4 — WEB ADMIN DASHBOARD
+══════════════════════════════════════════ -->
+<div id="app4" class="panel">
+<div class="header">
+  <div><div class="tag">Edukite · Client Application 4 of 4</div><h1>Web Admin <span>Dashboard</span><br>Architecture</h1></div>
+  <div class="meta">Stack: React + TypeScript<br>AWS ALB → Dashboard API → MongoDB<br><span class="badge">Always Online</span><span class="badge">Administrators</span><span class="badge">Full R/W Access</span></div>
+</div>
+<div class="card c-navy-b" style="margin-bottom:14px">
+  <div class="card-title ct-navy">Dashboard UI Panels (React + TypeScript)</div>
+  <div class="ui-panels">
+    <div class="ui-panel"><div class="ui-panel-icon">📊</div><div class="ui-panel-title">Analytics</div><div class="ui-panel-desc">Progress rates, completion %, subject trends</div></div>
+    <div class="ui-panel"><div class="ui-panel-icon">👥</div><div class="ui-panel-title">User Management</div><div class="ui-panel-desc">View, activate, deactivate student accounts</div></div>
+    <div class="ui-panel"><div class="ui-panel-icon">💻</div><div class="ui-panel-title">Device Management</div><div class="ui-panel-desc">Activate devices, view sync status, decommission</div></div>
+    <div class="ui-panel"><div class="ui-panel-icon">🏫</div><div class="ui-panel-title">Organisation Mgmt</div><div class="ui-panel-desc">Create orgs, set grade licences, device limits</div></div>
+    <div class="ui-panel"><div class="ui-panel-icon">📚</div><div class="ui-panel-title">Content Management</div><div class="ui-panel-desc">Trigger Moodle sync, edit content_structure</div></div>
+    <div class="ui-panel"><div class="ui-panel-icon">📦</div><div class="ui-panel-title">Installations</div><div class="ui-panel-desc">Track content pack versions per device</div></div>
+    <div class="ui-panel"><div class="ui-panel-icon">🔄</div><div class="ui-panel-title">Sync Monitor</div><div class="ui-panel-desc">View offline sync batches, last sync timestamps</div></div>
+    <div class="ui-panel"><div class="ui-panel-icon">🔐</div><div class="ui-panel-title">Admin Auth</div><div class="ui-panel-desc">Credential-based login, role management</div></div>
+  </div>
+</div>
+<div class="arch-main">
+  <div>
+    <div class="card c-blue-b"><div class="card-title ct-blue">① Frontend — React + TypeScript</div><div class="sub-label">Core Libraries</div><div class="chips" style="margin-bottom:8px"><div class="chip ch-blue">React 18</div><div class="chip ch-blue">TypeScript</div><div class="chip ch-blue">React Router</div><div class="chip ch-blue">Redux / Zustand</div><div class="chip ch-blue">Axios (HTTP client)</div><div class="chip ch-blue">React Query (caching)</div></div><div class="sub-label">Charts & Tables</div><div class="chips"><div class="chip ch-dim">Recharts / Chart.js</div><div class="chip ch-dim">AG Grid / TanStack Table</div><div class="chip ch-dim">Date-fns / Dayjs</div></div></div>
+    <div class="arrow-row"><div class="a-line"></div><div class="a-tip"></div><div class="a-lbl">HTTPS → AWS ALB → EKS Dashboard API</div><div class="a-line"></div><div class="a-tip"></div></div>
+    <div class="card c-teal-b"><div class="card-title ct-teal">② Dashboard API (EKS — Node.js)</div><div class="sub-label">API Endpoints</div><div class="chips" style="margin-bottom:8px"><div class="chip ch-teal">GET/POST /api/users</div><div class="chip ch-teal">GET/POST /api/devices</div><div class="chip ch-teal">GET/POST /api/organizations</div><div class="chip ch-teal">GET /api/progress</div><div class="chip ch-teal">GET /api/usage-logs</div><div class="chip ch-teal">POST /api/content/sync</div><div class="chip ch-teal">GET/POST /api/installations</div><div class="chip ch-teal">GET /api/sync-records</div></div><div class="sub-label">Auth & Security</div><div class="chips"><div class="chip ch-dim">JWT-based admin auth</div><div class="chip ch-dim">Role: admin / superadmin</div><div class="chip ch-dim">AWS WAF (ALB level)</div></div></div>
+    <div class="arrow-row"><div class="a-line"></div><div class="a-tip"></div><div class="a-lbl">MongoDB driver (Mongoose)</div><div class="a-line"></div><div class="a-tip"></div></div>
+    <div class="card c-green-b"><div class="card-title ct-green">③ MongoDB — Full Read/Write Access</div><table class="matrix"><tr><th>Collection</th><th>Access</th><th>Admin Use</th></tr><tr><td>users</td><td><span class="rw">R/W</span></td><td>View / activate / deactivate students</td></tr><tr><td>content_structure</td><td><span class="rw">R/W</span></td><td>Edit content, trigger Moodle sync</td></tr><tr><td>progress</td><td><span class="ro">R</span></td><td>Analytics, completion dashboards</td></tr><tr><td>usage_logs</td><td><span class="ro">R</span></td><td>Event streams, engagement reports</td></tr><tr><td>devices</td><td><span class="rw">R/W</span></td><td>Activate, decommission lab devices</td></tr><tr><td>organizations</td><td><span class="rw">R/W</span></td><td>Create orgs, set licences</td></tr><tr><td>installations</td><td><span class="rw">R/W</span></td><td>Track content pack deployment</td></tr><tr><td>sync_records</td><td><span class="ro">R</span></td><td>Audit offline sync batches</td></tr></table></div>
+  </div>
+  <div>
+    <div class="moodle-box"><div class="moodle-title">📖 Moodle LMS Integration</div><div class="sub-label">Content Sync Flow</div><div class="chips" style="margin-bottom:8px"><div class="chip ch-violet">Admin triggers sync</div><div class="chip ch-violet">Moodle REST API call</div><div class="chip ch-violet">Grade→Subject→Topic→Lesson</div><div class="chip ch-violet">Upsert content_structure</div><div class="chip ch-violet">moodleSyncedAt updated</div></div><div class="sub-label">Content Fields Synced</div><div class="chips"><div class="chip ch-teal">lessonId, title</div><div class="chip ch-teal">videoId (VdoCipher)</div><div class="chip ch-teal">activityPath (S3)</div><div class="chip ch-teal">thumbPath (S3)</div><div class="chip ch-teal">durationSec</div></div></div>
+    <div class="card c-amber-b"><div class="card-title ct-amber">Analytics Capabilities</div><div class="chips" style="margin-bottom:8px"><div class="chip ch-amber">Per-student progress tracking</div><div class="chip ch-amber">Completion % by subject/grade</div><div class="chip ch-amber">Organisation-level reports</div><div class="chip ch-amber">Device sync status overview</div><div class="chip ch-amber">Usage event streams</div><div class="chip ch-amber">Retention: 90-day TTL on logs</div></div><div class="sub-label">Key MongoDB Queries</div><div class="chips"><div class="chip ch-dim">progress indexed by grade+subject</div><div class="chip ch-dim">users indexed by orgId</div><div class="chip ch-dim">devices indexed by orgId</div></div></div>
+    <div class="card c-violet-b"><div class="card-title ct-violet">Infrastructure (Browser → Cloud)</div><div class="sub-label">Request Path</div><div class="chips" style="margin-bottom:8px"><div class="chip ch-violet">Browser (React SPA)</div><div class="chip ch-violet">HTTPS (TLS 1.3)</div><div class="chip ch-violet">AWS ALB + WAF</div><div class="chip ch-violet">/api/dashboard → EKS</div><div class="chip ch-violet">MongoDB private subnet</div></div><div class="sub-label">Deployment</div><div class="chips"><div class="chip ch-dim">React SPA → S3 + CloudFront</div><div class="chip ch-dim">API → EKS containers</div><div class="chip ch-dim">SSL cert at ALB</div></div></div>
+    <div class="card c-rose-b"><div class="card-title ct-rose">External Services Used</div><div class="chips"><div class="chip ch-rose">Moodle LMS (content sync)</div><div class="chip ch-rose">AWS S3 (static assets)</div><div class="chip ch-rose">CloudFront CDN (SPA hosting)</div><div class="chip ch-rose">AWS Secrets Manager (creds)</div><div class="chip ch-rose">AWS CloudWatch (monitoring)</div></div></div>
+  </div>
+</div>
+<div class="flow-bar"><div class="flow-bar-title">Admin Workflow</div><div class="flow-steps"><div class="fs fs-b">① Login (credentials)</div><div class="fa">→</div><div class="fs fs-b">② Dashboard home<br><span style="font-weight:400;font-size:9px">GET analytics overview</span></div><div class="fa">→</div><div class="fs fs-t">③ Manage orgs / devices<br><span style="font-weight:400;font-size:9px">R/W devices, organizations</span></div><div class="fa">→</div><div class="fs fs-t">④ Trigger Moodle sync<br><span style="font-weight:400;font-size:9px">upsert content_structure</span></div><div class="fa">→</div><div class="fs fs-g">⑤ View progress reports<br><span style="font-weight:400;font-size:9px">READ progress + usage_logs</span></div><div class="fa">→</div><div class="fs fs-g">⑥ Export / act on data</div></div></div>
+<footer>Edukite Technologies · Web Admin Dashboard Architecture · System Architecture v1.5 · March 2026</footer>
+</div>
+
+<script>
+function switchTab(n) {
+  // Deactivate all tabs and panels
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  // Activate selected
+  document.querySelector('.tab-' + n).classList.add('active');
+  document.getElementById('app' + n).classList.add('active');
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
