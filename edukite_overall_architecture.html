@@ -526,7 +526,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           <div class="box ops">
             <div class="box-tag">AWS</div>
             📊 Amazon CloudWatch
-            <div class="box-s">EC2 CPU · ALB latency<br>5xx error rate<br>MongoDB replication lag<br>Auto-scaling trigger</div>
+            <div class="box-s">EC2 CPU · ALB latency<br>5xx error rate<br>MongoDB replication lag</div>
           </div>
           <div class="box sec">
             <div class="box-tag">AWS</div>
@@ -539,8 +539,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
             <div class="box-s">CloudWatch alarm → SNS<br>Email + SMS alerts<br>to infrastructure team</div>
           </div>
           <div style="font-size:10px;color:#065F46;margin-left:8px;line-height:1.8;align-self:center;">
-            CW alarm → SNS → email/SMS<br>
-            CW alarm → Auto Scaling scale-out<br>
+            CW alarm → SNS → email/SMS<br>            
             Secrets injected at pod startup<br>
             EC2 uses IAM instance roles
           </div>
