@@ -264,7 +264,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
             <div class="grp-t" style="color:var(--org)">🏫 Android Org/School &nbsp;·&nbsp; Offline-first</div>
             <div class="row">
               <div class="box org">UI + ViewModel<div class="box-s">Hilt DI · Coroutines<br>Org-specific screens</div></div>
-              <div class="box org">SDCardDataManager<div class="box-s">AES decryption<br>CipherInputStream</div></div>
+              <div class="box org">SDCardDataManager<div class="box-s">AWS decryption<br>CipherInputStream</div></div>
               <div class="box org">Room DB<div class="box-s">isSynced flag<br>offline queue</div></div>
               <div class="box org">WorkManager<div class="box-s">3 sync workers<br>on internet</div></div>
             </div>
@@ -275,7 +275,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
             <div class="grp-t" style="color:var(--win)">💻 Windows Desktop &nbsp;·&nbsp; Electron · React</div>
             <div class="row">
               <div class="box win">React UI<div class="box-s">Electron renderer<br>BrowserWindow</div></div>
-              <div class="box win">Local Disk Reader<div class="box-s">Content packs<br>AES decryption</div></div>
+              <div class="box win">Local Disk Reader<div class="box-s">Content packs<br>AWS decryption</div></div>
               <div class="box win">SQLite DB<div class="box-s">isSynced flag<br>offline queue</div></div>
               <div class="box win">Sync Process<div class="box-s">Background job<br>on internet</div></div>
             </div>
@@ -387,7 +387,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           <div class="lbox eks" style="border-style:dashed;">
             <div class="grp eks" style="border-style:solid;">
               <div class="grp-t" style="color:var(--eks-c);">
-                Amazon ECS for Kubernetes (EKS) &nbsp;·&nbsp; Node.js containers &nbsp;·&nbsp; HPA: scale at CPU &gt; 70% &nbsp;·&nbsp; Min 2 / Max 10 pods &nbsp;·&nbsp; EC2 worker nodes
+                EC2 Auto Scaling Group &nbsp;·&nbsp; Node.js on EC2 &nbsp;·&nbsp; Scale at CPU &gt; 70% &nbsp;·&nbsp; Min 2 / Max 10 EC2 instances
               </div>
               <div class="row">
                 <div class="box eks">Auth Service<div class="box-s">OTP · JWT<br>Google login<br>Biz/Org login</div></div>
@@ -401,7 +401,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
             </div>
           </div>
           <div class="sg-col" style="justify-content:center;">
-            <div style="font-size:9px;color:var(--muted);text-align:center;line-height:1.6;">Amazon EC2<br>worker nodes<br>host EKS pods</div>
+            <div style="font-size:9px;color:var(--muted);text-align:center;line-height:1.6;">Amazon EC2<br>instances</br></div>
           </div>
         </div>
 
@@ -531,7 +531,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           <div class="box sec">
             <div class="box-tag">AWS</div>
             🔐 Secrets Manager
-            <div class="box-s">MongoDB creds · JWT key<br>VdoCipher · Twilio keys<br>CSI driver → EKS pods<br>IAM roles — no static keys</div>
+            <div class="box-s">MongoDB creds · JWT key<br>VdoCipher · Twilio keys<br>CSI driver →EC2 instances<br>IAM roles — no static keys</div>
           </div>
           <div class="box sns">
             <div class="box-tag">AWS</div>
@@ -540,7 +540,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           </div>
           <div style="font-size:10px;color:#065F46;margin-left:8px;line-height:1.8;align-self:center;">
             CW alarm → SNS → email/SMS<br>
-            CW alarm → HPA scale-out<br>
+            CW alarm → Auto Scaling scale-out<br>
             Secrets injected at pod startup<br>
             EC2 uses IAM instance roles
           </div>
@@ -600,14 +600,14 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
         <div class="row">
           <div class="box org">
             💾 microSD Card
-            <div class="box-s">Android Org only<br>AES-encrypted content packs<br>Serial validated at activation</div>
+            <div class="box-s">Android Org only<br>educli(AWS-encrypted content packs<br>Serial validated at activation</div>
           </div>
           <div class="box win">
             🖴 Local Disk
-            <div class="box-s">Windows Desktop only<br>AES-encrypted content packs<br>Installed with app</div>
+            <div class="box-s">Windows Desktop only<br>educli(AWS)-encrypted content packs<br>Installed with app</div>
           </div>
           <div style="font-size:10px;color:#64748B;margin-left:12px;line-height:1.8;align-self:center;">
-            Both contain: videos (VdoCipher offline) · HTML5 activities<br>
+            Both contain: videos ( offline) · HTML5 activities<br>
             practice tests · exam papers · encrypted with org key<br>
             <span style="color:#16A34A;font-weight:600;">No internet needed for content after one-time device activation</span>
           </div>
