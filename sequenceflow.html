@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Edukite — Flow Diagrams</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #F8FAFC;
+  color: #1E293B;
+  padding: 36px 32px 60px;
+}
+
+/* ── Page header ── */
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 40px; padding-bottom: 20px;
+  border-bottom: 2px solid #E2E8F0;
+}
+.page-title { font-size: 22px; font-weight: 700; color: #1E293B; }
+.page-sub   { font-size: 13px; color: #94A3B8; margin-top: 4px; }
+.page-badge {
+  background: #1E3A5F; color: white; border-radius: 6px;
+  padding: 6px 14px; font-size: 11px; font-weight: 600;
+}
+
+/* ── Flow section ── */
+.flow-section { margin-bottom: 52px; }
+.flow-title-row {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+}
+.flow-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.flow-heading { font-size: 17px; font-weight: 700; color: #1E293B; }
+.flow-desc    { font-size: 12px; color: #94A3B8; margin-top: 2px; }
+
+/* ── Flow strip (horizontal) ── */
+.flow-strip {
+  display: flex; align-items: stretch; gap: 0;
+  overflow-x: auto; padding-bottom: 4px;
+}
+
+/* ── Step box ── */
+.step {
+  display: flex; flex-direction: column; align-items: center;
+  flex-shrink: 0;
+}
+.step-box {
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-width: 130px;
+  max-width: 155px;
+  text-align: center;
+  border: 2px solid;
+  position: relative;
+}
+.step-icon  { font-size: 20px; margin-bottom: 6px; }
+.step-label { font-size: 12px; font-weight: 700; line-height: 1.3; }
+.step-sub   { font-size: 10px; margin-top: 4px; line-height: 1.4; opacity: 0.75; }
+
+/* ── Arrow between steps ── */
+.arrow {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; flex-shrink: 0;
+  width: 52px; padding-top: 18px;
+}
+.arrow-line {
+  height: 2px; width: 30px;
+  position: relative;
+}
+.arrow-line::after {
+  content: '';
+  position: absolute; right: -1px; top: -4px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid;
+}
+.arrow-msg {
+  font-size: 9px; font-weight: 600; color: #94A3B8;
+  text-align: center; margin-top: 5px; line-height: 1.3;
+  max-width: 52px;
+}
+
+/* ── Branch / decision ── */
+.branch-wrap {
+  display: flex; flex-direction: column; gap: 8px;
+  justify-content: center;
+}
+.branch-label {
+  font-size: 9px; font-weight: 700; text-align: center;
+  text-transform: uppercase; letter-spacing: 1px; color: #94A3B8;
+  margin-bottom: 2px;
+}
+.branch-box {
+  border-radius: 8px; padding: 10px 13px;
+  min-width: 130px; max-width: 155px;
+  text-align: center; border: 2px dashed;
+}
+.branch-box .step-label { font-size: 11px; }
+.branch-box .step-sub   { font-size: 10px; }
+
+/* ── Color themes ── */
+/* Blue — OTP Login */
+.t-blue .step-box   { background: #EFF6FF; border-color: #3B82F6; }
+.t-blue .step-label { color: #1D4ED8; }
+.t-blue .step-sub   { color: #3B82F6; }
+.t-blue .arrow-line { background: #3B82F6; }
+.t-blue .arrow-line::after { border-left-color: #3B82F6; }
+.t-blue .flow-num   { background: #2563EB; }
+
+/* Green — Device Activation */
+.t-green .step-box   { background: #F0FDF4; border-color: #22C55E; }
+.t-green .step-label { color: #15803D; }
+.t-green .step-sub   { color: #16A34A; }
+.t-green .arrow-line { background: #22C55E; }
+.t-green .arrow-line::after { border-left-color: #22C55E; }
+.t-green .flow-num   { background: #16A34A; }
+
+/* Amber — Content Fetch */
+.t-amber .step-box   { background: #FFFBEB; border-color: #F59E0B; }
+.t-amber .step-label { color: #92400E; }
+.t-amber .step-sub   { color: #D97706; }
+.t-amber .arrow-line { background: #F59E0B; }
+.t-amber .arrow-line::after { border-left-color: #F59E0B; }
+.t-amber .flow-num   { background: #D97706; }
+
+/* Violet — Offline Sync */
+.t-violet .step-box   { background: #F5F3FF; border-color: #8B5CF6; }
+.t-violet .step-label { color: #5B21B6; }
+.t-violet .step-sub   { color: #7C3AED; }
+.t-violet .arrow-line { background: #8B5CF6; }
+.t-violet .arrow-line::after { border-left-color: #8B5CF6; }
+.t-violet .flow-num   { background: #7C3AED; }
+
+/* Special highlight step */
+.step-highlight .step-box {
+  background: #1E3A5F !important;
+  border-color: #1E3A5F !important;
+}
+.step-highlight .step-label { color: white !important; }
+.step-highlight .step-sub   { color: #93C5FD !important; }
+
+/* External service step */
+.step-ext .step-box {
+  background: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+  border-style: dashed !important;
+}
+.step-ext .step-label { color: #475569 !important; }
+.step-ext .step-sub   { color: #94A3B8 !important; }
+
+/* Alt path box */
+.alt-row {
+  display: flex; align-items: center; gap: 0;
+  margin-top: 12px; padding: 12px 16px;
+  background: white; border: 1px solid #E2E8F0;
+  border-radius: 10px;
+}
+.alt-tag {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; padding: 3px 8px; border-radius: 4px;
+  margin-right: 14px; white-space: nowrap; flex-shrink: 0;
+}
+.alt-steps { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+
+/* Divider */
+.section-divider {
+  height: 1px; background: #E2E8F0;
+  margin: 52px 0;
+}
+
+/* Legend */
+.legend {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  padding: 14px 18px; background: white;
+  border: 1px solid #E2E8F0; border-radius: 8px;
+  margin-bottom: 40px;
+}
+.legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: #64748B; }
+.legend-dot  { width: 10px; height: 10px; border-radius: 3px; }
+
+/* Service map */
+.smap-wrap { overflow-x: auto; }
+.smap {
+  width: 100%; border-collapse: collapse;
+  background: white; border-radius: 10px;
+  overflow: hidden; border: 1px solid #E2E8F0;
+}
+.smap th {
+  background: #1E3A5F; color: white;
+  padding: 11px 14px; font-size: 11px; font-weight: 600;
+  text-align: left; white-space: nowrap;
+}
+.smap td {
+  padding: 10px 14px; border-bottom: 1px solid #F1F5F9;
+  font-size: 12px; vertical-align: middle;
+}
+.smap tr:last-child td { border-bottom: none; }
+.smap tr:hover td { background: #F8FAFC; }
+.smap-service { font-weight: 700; color: #1E3A5F; }
+.smap-path    { font-size: 10px; color: #94A3B8; font-family: monospace; }
+
+.chip {
+  display: inline-block; border-radius: 4px;
+  padding: 2px 8px; font-size: 10px; font-weight: 600;
+  margin: 2px; white-space: nowrap;
+}
+.chip-b { background: #EFF6FF; color: #2563EB; }
+.chip-g { background: #F0FDF4; color: #15803D; }
+.chip-v { background: #F5F3FF; color: #5B21B6; }
+.chip-a { background: #FFFBEB; color: #92400E; }
+.chip-n { background: #F1F5F9; color: #64748B; }
+
+footer {
+  text-align: center; font-size: 11px; color: #CBD5E1;
+  margin-top: 40px; padding-top: 20px;
+  border-top: 1px solid #E2E8F0;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="page-header">
+  <div>
+    <div class="page-title">Edukite — System Flow Diagrams</div>
+    <div class="page-sub">4 Key Flows &nbsp;·&nbsp; Backend Service Map &nbsp;·&nbsp; March 2026</div>
+  </div>
+  <div class="page-badge">Technical Due Diligence</div>
+</div>
+
+<!-- ── Legend ── -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#3B82F6"></div>App action</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1E3A5F"></div>Backend / server</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#CBD5E1;border:1px dashed #94A3B8"></div>External service</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F1F5F9;border:1px solid #E2E8F0"></div>Local storage</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- FLOW 1: OTP LOGIN                                -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="flow-section t-blue">
+  <div class="flow-title-row">
+    <div class="flow-num">1</div>
+    <div>
+      <div class="flow-heading">OTP Login — Retail Android App</div>
+      <div class="flow-desc">Student logs in with their phone number. A one-time PIN is sent by SMS and verified.</div>
+    </div>
+  </div>
+
+  <div class="flow-strip">
+
+    <div class="step t-blue">
+      <div class="step-box">
+        <div class="step-icon">📱</div>
+        <div class="step-label">Student enters phone number</div>
+        <div class="step-sub">Taps "Send OTP"</div>
+      </div>
+    </div>
+
+    <div class="arrow t-blue">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">send request</div>
+    </div>
+
+    <div class="step t-blue step-highlight">
+      <div class="step-box">
+        <div class="step-icon">🖥️</div>
+        <div class="step-label">Auth Server receives request</div>
+        <div class="step-sub">Checks if phone exists in DB</div>
+      </div>
+    </div>
+
+    <div class="arrow t-blue">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">trigger SMS</div>
+    </div>
+
+    <div class="step t-blue step-ext">
+      <div class="step-box">
+        <div class="step-icon">💬</div>
+        <div class="step-label">Twilio / SMSPortal</div>
+        <div class="step-sub">Sends 6-digit OTP to student's phone</div>
+      </div>
+    </div>
+
+    <div class="arrow t-blue">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">SMS arrives</div>
+    </div>
+
+    <div class="step t-blue">
+      <div class="step-box">
+        <div class="step-icon">🔢</div>
+        <div class="step-label">App auto-reads OTP</div>
+        <div class="step-sub">SMS auto-fill — no manual typing needed</div>
+      </div>
+    </div>
+
+    <div class="arrow t-blue">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">verify OTP</div>
+    </div>
+
+    <div class="step t-blue step-highlight">
+      <div class="step-box">
+        <div class="step-icon">✅</div>
+        <div class="step-label">Server verifies OTP</div>
+        <div class="step-sub">Issues login token (JWT)</div>
+      </div>
+    </div>
+
+    <div class="arrow t-blue">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">logged in</div>
+    </div>
+
+    <div class="step t-blue">
+      <div class="step-box">
+        <div class="step-icon">🏠</div>
+        <div class="step-label">Student reaches Home</div>
+        <div class="step-sub">Token saved securely on device</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Alt paths -->
+  <div class="alt-row" style="margin-top:14px">
+    <div class="alt-tag" style="background:#EFF6FF;color:#2563EB">New user</div>
+    <div class="alt-steps t-blue">
+      <div class="step t-blue" style="margin-right:8px">
+        <div class="step-box" style="min-width:120px">
+          <div class="step-label">Registration screen</div>
+          <div class="step-sub">Enter name + grade</div>
+        </div>
+      </div>
+      <div class="arrow t-blue"><div class="arrow-line"></div></div>
+      <div class="step t-blue" style="margin-left:8px">
+        <div class="step-box" style="min-width:120px">
+          <div class="step-label">Account created in DB</div>
+          <div class="step-sub">Then → Home screen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alt-row" style="margin-top:8px">
+    <div class="alt-tag" style="background:#F0FDF4;color:#15803D">Returning user</div>
+    <div style="font-size:12px;color:#475569">Server recognises the phone number → skips registration → goes straight to Home screen.</div>
+  </div>
+
+</div>
+
+<div class="section-divider"></div>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- FLOW 2: DEVICE ACTIVATION                        -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="flow-section t-green">
+  <div class="flow-title-row">
+    <div class="flow-num">2</div>
+    <div>
+      <div class="flow-heading">Device Activation — Org Android &amp; Windows App</div>
+      <div class="flow-desc">School devices need a one-time internet connection to register. After that, they work fully offline.</div>
+    </div>
+  </div>
+
+  <div class="flow-strip">
+
+    <div class="step t-green">
+      <div class="step-box">
+        <div class="step-icon">💾</div>
+        <div class="step-label">Insert microSD / install app</div>
+        <div class="step-sub">Contains school's org code</div>
+      </div>
+    </div>
+
+    <div class="arrow t-green">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">read config</div>
+    </div>
+
+    <div class="step t-green">
+      <div class="step-box">
+        <div class="step-icon">🔍</div>
+        <div class="step-label">App reads org code</div>
+        <div class="step-sub">Generates unique device fingerprint</div>
+      </div>
+    </div>
+
+    <div class="arrow t-green">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">activate</div>
+    </div>
+
+    <div class="step t-green step-highlight">
+      <div class="step-box">
+        <div class="step-icon">🖥️</div>
+        <div class="step-label">Server validates school</div>
+        <div class="step-sub">Checks org is active + device limit not exceeded</div>
+      </div>
+    </div>
+
+    <div class="arrow t-green">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">register</div>
+    </div>
+
+    <div class="step t-green step-highlight">
+      <div class="step-box">
+        <div class="step-icon">📋</div>
+        <div class="step-label">Device registered in DB</div>
+        <div class="step-sub">Activation token issued to device</div>
+      </div>
+    </div>
+
+    <div class="arrow t-green">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">success</div>
+    </div>
+
+    <div class="step t-green">
+      <div class="step-box">
+        <div class="step-icon">📴</div>
+        <div class="step-label">App goes offline</div>
+        <div class="step-sub">No internet needed from this point</div>
+      </div>
+    </div>
+
+    <div class="arrow t-green">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">ready</div>
+    </div>
+
+    <div class="step t-green">
+      <div class="step-box">
+        <div class="step-icon">📚</div>
+        <div class="step-label">Student uses content</div>
+        <div class="step-sub">Fully offline, from SD card or local disk</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="alt-row" style="margin-top:14px">
+    <div class="alt-tag" style="background:#FEF9C3;color:#854D0E">Org Android only</div>
+    <div style="font-size:12px;color:#475569">microSD card serial is also validated against the server — prevents unauthorised SD cards from being used on activated devices.</div>
+  </div>
+
+  <div class="alt-row" style="margin-top:8px">
+    <div class="alt-tag" style="background:#FEE2E2;color:#991B1B">If device limit reached</div>
+    <div style="font-size:12px;color:#475569">Server rejects activation. Admin must decommission an existing device via the Web Dashboard first.</div>
+  </div>
+
+</div>
+
+<div class="section-divider"></div>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- FLOW 3: CONTENT FETCH                            -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="flow-section t-amber">
+  <div class="flow-title-row">
+    <div class="flow-num">3</div>
+    <div>
+      <div class="flow-heading">Content Fetch &amp; Playback — All Apps</div>
+      <div class="flow-desc">How a student opens a lesson. The source differs by app — live server, SD card, or local disk.</div>
+    </div>
+  </div>
+
+  <!-- Retail path -->
+  <div style="margin-bottom:10px;font-size:11px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:1px;">📱 Retail Android — Always Online</div>
+  <div class="flow-strip" style="margin-bottom:16px">
+
+    <div class="step t-amber">
+      <div class="step-box">
+        <div class="step-icon">👆</div>
+        <div class="step-label">Student taps a lesson</div>
+        <div class="step-sub">Subscription checked first</div>
+      </div>
+    </div>
+
+    <div class="arrow t-amber">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">fetch list</div>
+    </div>
+
+    <div class="step t-amber step-highlight">
+      <div class="step-box">
+        <div class="step-icon">🖥️</div>
+        <div class="step-label">Content API</div>
+        <div class="step-sub">Returns subject / lesson list from DB</div>
+      </div>
+    </div>
+
+    <div class="arrow t-amber">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">get video key</div>
+    </div>
+
+    <div class="step t-amber step-ext">
+      <div class="step-box">
+        <div class="step-icon">🎬</div>
+        <div class="step-label">VdoCipher DRM</div>
+        <div class="step-sub">Issues one-time key for this video</div>
+      </div>
+    </div>
+
+    <div class="arrow t-amber">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">stream</div>
+    </div>
+
+    <div class="step t-amber">
+      <div class="step-box">
+        <div class="step-icon">▶️</div>
+        <div class="step-label">Video plays</div>
+        <div class="step-sub">Encrypted DRM stream</div>
+      </div>
+    </div>
+
+    <div class="arrow t-amber">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">save progress</div>
+    </div>
+
+    <div class="step t-amber">
+      <div class="step-box">
+        <div class="step-icon">💾</div>
+        <div class="step-label">Progress saved</div>
+        <div class="step-sub">Synced to server every 5 min</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Offline path -->
+  <div style="margin-bottom:10px;font-size:11px;font-weight:700;color:#15803D;text-transform:uppercase;letter-spacing:1px;">🏫 Org Android / Windows — Offline</div>
+  <div class="flow-strip">
+
+    <div class="step t-amber">
+      <div class="step-box" style="background:#F0FDF4;border-color:#22C55E">
+        <div class="step-icon">👆</div>
+        <div class="step-label" style="color:#15803D">Student taps a lesson</div>
+        <div class="step-sub" style="color:#16A34A">No internet needed</div>
+      </div>
+    </div>
+
+    <div class="arrow t-amber">
+      <div class="arrow-line" style="background:#22C55E"></div>
+      <div class="arrow-msg">read file</div>
+    </div>
+
+    <div class="step t-amber">
+      <div class="step-box" style="background:#F0FDF4;border-color:#22C55E;border-style:dashed">
+        <div class="step-icon">💾</div>
+        <div class="step-label" style="color:#15803D">microSD / Local Disk</div>
+        <div class="step-sub" style="color:#16A34A">Encrypted content files</div>
+      </div>
+    </div>
+
+    <div class="arrow t-amber">
+      <div class="arrow-line" style="background:#22C55E"></div>
+      <div class="arrow-msg">decrypt</div>
+    </div>
+
+    <div class="step t-amber">
+      <div class="step-box" style="background:#F0FDF4;border-color:#22C55E">
+        <div class="step-icon">▶️</div>
+        <div class="step-label" style="color:#15803D">Content plays</div>
+        <div class="step-sub" style="color:#16A34A">Decrypted on device — no server</div>
+      </div>
+    </div>
+
+    <div class="arrow t-amber">
+      <div class="arrow-line" style="background:#22C55E"></div>
+      <div class="arrow-msg">save locally</div>
+    </div>
+
+    <div class="step t-amber">
+      <div class="step-box" style="background:#F0FDF4;border-color:#22C55E">
+        <div class="step-icon">📋</div>
+        <div class="step-label" style="color:#15803D">Progress saved locally</div>
+        <div class="step-sub" style="color:#16A34A">Queued for next Wi-Fi sync</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="section-divider"></div>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- FLOW 4: OFFLINE SYNC                             -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="flow-section t-violet">
+  <div class="flow-title-row">
+    <div class="flow-num">4</div>
+    <div>
+      <div class="flow-heading">Offline Sync — Org Android &amp; Windows</div>
+      <div class="flow-desc">When Wi-Fi is available, the app automatically sends all stored progress to the server.</div>
+    </div>
+  </div>
+
+  <div class="flow-strip">
+
+    <div class="step t-violet">
+      <div class="step-box">
+        <div class="step-icon">📶</div>
+        <div class="step-label">Wi-Fi detected</div>
+        <div class="step-sub">App notices network is available</div>
+      </div>
+    </div>
+
+    <div class="arrow t-violet">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">read local DB</div>
+    </div>
+
+    <div class="step t-violet">
+      <div class="step-box">
+        <div class="step-icon">📦</div>
+        <div class="step-label">Collects unsynced data</div>
+        <div class="step-sub">Progress, quiz results, usage events</div>
+      </div>
+    </div>
+
+    <div class="arrow t-violet">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">send batch</div>
+    </div>
+
+    <div class="step t-violet step-highlight">
+      <div class="step-box">
+        <div class="step-icon">🖥️</div>
+        <div class="step-label">Sync API receives data</div>
+        <div class="step-sub">Checks if this batch was already received</div>
+      </div>
+    </div>
+
+    <div class="arrow t-violet">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">write to DB</div>
+    </div>
+
+    <div class="step t-violet step-highlight">
+      <div class="step-box">
+        <div class="step-icon">✅</div>
+        <div class="step-label">Progress saved in MongoDB</div>
+        <div class="step-sub">Visible in Admin Dashboard</div>
+      </div>
+    </div>
+
+    <div class="arrow t-violet">
+      <div class="arrow-line"></div>
+      <div class="arrow-msg">confirm</div>
+    </div>
+
+    <div class="step t-violet">
+      <div class="step-box">
+        <div class="step-icon">🔄</div>
+        <div class="step-label">Local data marked synced</div>
+        <div class="step-sub">Won't be sent again</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="alt-row" style="margin-top:14px">
+    <div class="alt-tag" style="background:#F5F3FF;color:#5B21B6">Safe retry</div>
+    <div style="font-size:12px;color:#475569">Each sync batch has a unique ID. If the connection drops mid-sync and the app retries, the server recognises the duplicate and ignores it — so progress is never saved twice.</div>
+  </div>
+
+  <div class="alt-row" style="margin-top:8px">
+    <div class="alt-tag" style="background:#FEE2E2;color:#991B1B">No Wi-Fi</div>
+    <div style="font-size:12px;color:#475569">Sync is skipped. Data stays safely in local storage and will sync next time the device connects.</div>
+  </div>
+
+</div>
+
+<div class="section-divider"></div>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SERVICE MAP                                       -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-title-row">
+    <div class="flow-num" style="background:#1E3A5F">5</div>
+    <div>
+      <div class="flow-heading">Backend Service Map — Who Calls What</div>
+      <div class="flow-desc">Which app uses which backend service. All traffic goes through the AWS load balancer.</div>
+    </div>
+  </div>
+
+  <div class="smap-wrap">
+    <table class="smap">
+      <thead>
+        <tr>
+          <th>Backend Service</th>
+          <th>📱 Android Retail</th>
+          <th>🏫 Android Org</th>
+          <th>💻 Windows</th>
+          <th>🌐 Web Admin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="smap-service">Auth Service</div>
+            <div class="smap-path">/api/auth</div>
+          </td>
+          <td><span class="chip chip-b">Phone + OTP login</span><span class="chip chip-b">Google login</span></td>
+          <td><span class="chip chip-g">Org code login</span></td>
+          <td><span class="chip chip-v">Device activation</span></td>
+          <td><span class="chip chip-a">Admin credentials</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="smap-service">Content API</div>
+            <div class="smap-path">/api/content</div>
+          </td>
+          <td><span class="chip chip-b">Fetch subjects & lessons</span></td>
+          <td><span class="chip chip-n">Reads from SD card</span></td>
+          <td><span class="chip chip-n">Reads from local disk</span></td>
+          <td><span class="chip chip-a">View & edit content</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="smap-service">Video Service</div>
+            <div class="smap-path">/api/video</div>
+          </td>
+          <td><span class="chip chip-b">Get DRM video key</span></td>
+          <td><span class="chip chip-g">Download offline video</span><span style="font-size:10px;color:#94A3B8">(setup only)</span></td>
+          <td><span class="chip chip-n">Not used</span></td>
+          <td><span class="chip chip-n">Not used</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="smap-service">Progress API</div>
+            <div class="smap-path">/api/progress</div>
+          </td>
+          <td><span class="chip chip-b">Send progress live</span><span style="font-size:10px;color:#94A3B8">(every 5 min)</span></td>
+          <td><span class="chip chip-n">Uses Sync API</span></td>
+          <td><span class="chip chip-n">Uses Sync API</span></td>
+          <td><span class="chip chip-a">View analytics</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="smap-service">Offline Sync API</div>
+            <div class="smap-path">/api/sync</div>
+          </td>
+          <td><span class="chip chip-n">Not used</span></td>
+          <td><span class="chip chip-g">Send batched progress</span></td>
+          <td><span class="chip chip-v">Send batched progress</span></td>
+          <td><span class="chip chip-a">View sync history</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="smap-service">Installation API</div>
+            <div class="smap-path">/api/installation</div>
+          </td>
+          <td><span class="chip chip-b">Link device to account</span></td>
+          <td><span class="chip chip-g">Register school device</span></td>
+          <td><span class="chip chip-v">Register lab computer</span></td>
+          <td><span class="chip chip-a">Manage all devices</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="smap-service">Dashboard API</div>
+            <div class="smap-path">/api/dashboard</div>
+          </td>
+          <td><span class="chip chip-n">Not used</span></td>
+          <td><span class="chip chip-n">Not used</span></td>
+          <td><span class="chip chip-n">Not used</span></td>
+          <td><span class="chip chip-a">Full access — users, orgs, content, sync</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer>Edukite Technologies &nbsp;·&nbsp; System Flow Diagrams &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; Confidential</footer>
+
+</body>
+</html>
