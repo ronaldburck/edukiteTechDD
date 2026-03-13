@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Edukite — Infrastructure Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #F0F2F5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 24px 60px;
+}
+
+.canvas {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  padding: 48px 56px 56px;
+  width: 1020px;
+}
+
+/* ── Title block ── */
+.title-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 36px; padding-bottom: 20px;
+  border-bottom: 1.5px solid #E2E8F0;
+}
+.diagram-title { font-size: 18px; font-weight: 700; color: #1E293B; }
+.diagram-sub   { font-size: 12px; color: #94A3B8; margin-top: 4px; }
+.region-badge  {
+  background: #1E3A5F; color: white;
+  border-radius: 6px; padding: 6px 14px;
+  font-size: 11px; font-weight: 600;
+}
+
+/* ── Layer layout ── */
+.layers { display: flex; flex-direction: column; gap: 0; }
+
+.layer-row { display: flex; align-items: stretch; gap: 0; }
+
+.layer-label {
+  width: 140px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 20px;
+  font-size: 11px; font-weight: 600; color: #94A3B8;
+  letter-spacing: 0.3px; text-align: right; line-height: 1.4;
+}
+
+.layer-box {
+  flex: 1; border-radius: 12px; border: 1.5px dashed;
+  padding: 18px 20px; position: relative;
+}
+
+/* Arrows */
+.arrow-row { display: flex; align-items: center; }
+.arrow-spacer { width: 140px; flex-shrink: 0; }
+.arrow-col {
+  flex: 1; display: flex; align-items: center;
+  justify-content: center; padding: 5px 0; gap: 48px;
+}
+.arr { display: flex; flex-direction: column; align-items: center; }
+.arr-line { width: 2px; height: 16px; }
+.arr-tip { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; }
+.arr-tip.down { border-top: 7px solid; }
+.arr-tip.up   { border-bottom: 7px solid; border-top: none; }
+.arr-label { font-size: 9px; font-weight: 500; color: #94A3B8; margin-top: 3px; white-space: nowrap; }
+
+/* Box types */
+.box-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; }
+
+.box {
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 12px; font-weight: 600; text-align: center;
+  border: 1.5px solid; line-height: 1.4; min-width: 108px;
+}
+.box-sub { font-size: 10px; font-weight: 400; margin-top: 3px; opacity: 0.75; line-height: 1.3; }
+.box-aws-logo {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; opacity: 0.5; margin-bottom: 2px;
+}
+
+.cylinder-wrap { display: flex; flex-direction: column; align-items: center; min-width: 108px; }
+.cylinder      { border-radius: 8px 8px 0 0; border: 1.5px solid; border-bottom: none; padding: 8px 14px 4px; font-size: 12px; font-weight: 600; text-align: center; width: 100%; }
+.cylinder-cap  { border-radius: 0 0 8px 8px; border: 1.5px solid; border-top: 1.5px dashed; padding: 3px 14px 7px; font-size: 10px; font-weight: 400; text-align: center; width: 100%; opacity: 0.8; }
+
+.inner-group { border-radius: 8px; border: 1.5px solid; padding: 12px 14px 14px; flex: 1; }
+.ig-title { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+/* ── Security group callouts on right ── */
+.sg-sidebar {
+  margin-left: 12px; flex-shrink: 0; width: 176px;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.sg-box {
+  border-radius: 7px; border: 1px solid #FECDD3;
+  background: #FFF1F2; padding: 7px 10px;
+}
+.sg-name { font-size: 10px; font-weight: 700; color: #9F1239; margin-bottom: 2px; }
+.sg-rule { font-size: 10px; color: #BE123C; line-height: 1.4; }
+
+/* ── Layer themes ── */
+/* DNS */
+.l-dns  { border-color: #A5F3FC; background: #ECFEFF; }
+.l-dns .box { background: #CFFAFE; border-color: #06B6D4; color: #164E63; }
+
+/* Gateway */
+.l-gw   { border-color: #F9A8D4; background: #FFF1F2; }
+.l-gw .box          { background: #FECDD3; border-color: #F43F5E; color: #9F1239; }
+.l-gw .box.alb      { background: #BFDBFE; border-color: #3B82F6; color: #1D4ED8; }
+.l-gw .box.nat      { background: #D1FAE5; border-color: #22C55E; color: #065F46; }
+
+/* Container */
+.l-eks  { border-color: #6EE7B7; background: #F0FDF4; }
+.l-eks .inner-group { border-color: #86EFAC; background: #DCFCE7; }
+.l-eks .ig-title    { color: #15803D; }
+.l-eks .box         { background: #D1FAE5; border-color: #34D399; color: #065F46; }
+
+/* Database */
+.l-db   { border-color: #C4B5FD; background: #F5F3FF; }
+.l-db .box           { background: #EDE9FE; border-color: #7C3AED; color: #4C1D95; }
+.l-db .cylinder      { background: #DDD6FE; border-color: #7C3AED; color: #4C1D95; }
+.l-db .cylinder-cap  { background: #EDE9FE; border-color: #7C3AED; color: #5B21B6; }
+.l-db .inner-group   { border-color: #C4B5FD; background: #EDE9FE; }
+.l-db .ig-title      { color: #5B21B6; }
+
+/* Storage */
+.l-st   { border-color: #FDE68A; background: #FEFCE8; }
+.l-st .box          { background: #FEF08A; border-color: #CA8A04; color: #713F12; }
+.l-st .cylinder     { background: #FEF08A; border-color: #CA8A04; color: #713F12; }
+.l-st .cylinder-cap { background: #FEFCE8; border-color: #CA8A04; color: #854D0E; }
+
+/* Ops */
+.l-ops  { border-color: #86EFAC; background: #F0FDF4; }
+.l-ops .box { background: #D1FAE5; border-color: #16A34A; color: #14532D; }
+.l-ops .box.sns { background: #FECDD3; border-color: #F43F5E; color: #9F1239; }
+
+/* External */
+.l-ext  { border-color: #CBD5E1; background: #F8FAFC; }
+.l-ext .box { background: #E2E8F0; border-color: #94A3B8; color: #334155; }
+
+/* Arrow colors */
+.ac { background: #06B6D4; } .tc { border-top-color:#06B6D4; border-bottom-color:#06B6D4; }
+.ar { background: #F43F5E; } .tr { border-top-color:#F43F5E; border-bottom-color:#F43F5E; }
+.ag { background: #22C55E; } .tg { border-top-color:#22C55E; border-bottom-color:#22C55E; }
+.av { background: #8B5CF6; } .tv { border-top-color:#8B5CF6; border-bottom-color:#8B5CF6; }
+.aa { background: #EAB308; } .ta { border-top-color:#EAB308; border-bottom-color:#EAB308; }
+.as { background: #94A3B8; } .ts { border-top-color:#94A3B8; border-bottom-color:#94A3B8; }
+
+/* ── VPC wrapper label ── */
+.vpc-wrapper {
+  border: 2px solid #BFDBFE;
+  border-radius: 14px;
+  padding: 14px 14px 14px;
+  background: rgba(239,246,255,0.3);
+  margin-bottom: 0;
+  position: relative;
+}
+.vpc-label {
+  position: absolute; top: -12px; left: 20px;
+  background: white; padding: 2px 10px;
+  font-size: 10px; font-weight: 700; color: #2563EB;
+  border: 1.5px solid #BFDBFE; border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* ── Legend ── */
+.legend {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  margin-top: 32px; padding-top: 20px;
+  border-top: 1px solid #E2E8F0; justify-content: center;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #64748B; }
+.legend-dot  { width: 11px; height: 11px; border-radius: 3px; border: 1.5px solid; flex-shrink: 0; }
+
+footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- Title -->
+  <div class="title-row">
+    <div>
+      <div class="diagram-title">Edukite — Infrastructure Architecture</div>
+      <div class="diagram-sub">Confirmed AWS Services &nbsp;·&nbsp; af-south-1 (Capetown) &nbsp;·&nbsp; March 2026</div>
+    </div>
+    <div class="region-badge">AWS af-south-1 · Capetown</div>
+  </div>
+
+  <div class="layers">
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- LAYER 1: DNS                               -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="layer-row">
+      <div class="layer-label">DNS Layer</div>
+      <div class="layer-box l-dns">
+        <div class="box-row">
+          <div class="box l-dns">
+            <div class="box-aws-logo">AWS</div>
+            🌐 Amazon Route 53
+            <div class="box-sub">DNS routing for all client apps<br>Health-check-based failover<br>Maps domain → ALB endpoint</div>
+          </div>
+          <div style="display:flex;align-items:center;font-size:11px;color:#0E7490;margin-left:8px;line-height:1.6;">
+            All 4 client apps resolve the Edukite domain via Route 53.<br>
+            Route 53 health checks detect ALB failure and can reroute traffic.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="arrow-row">
+      <div class="arrow-spacer"></div>
+      <div class="arrow-col">
+        <div class="arr">
+          <div class="arr-line ac"></div>
+          <div class="arr-tip down tc"></div>
+          <div class="arr-label">DNS resolved → HTTPS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VPC wrapper starts -->
+    <div class="vpc-wrapper">
+      <div class="vpc-label">Amazon VPC — ap-south-1 · Public + Private Subnets</div>
+
+      <div class="layers" style="gap:0">
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- LAYER 2: GATEWAY (public subnet)           -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="layer-row">
+          <div class="layer-label" style="color:#64748B;font-size:10px;">Public Subnets<br>AZ-a &amp; AZ-b</div>
+          <div class="layer-box l-gw">
+            <div class="box-row">
+              <div class="box l-gw">
+                <div class="box-aws-logo">AWS</div>
+                🛡️ AWS WAF
+                <div class="box-sub">DDoS · SQLi · Bot filtering<br>Attached to ALB</div>
+              </div>
+              <div class="box alb l-gw">
+                <div class="box-aws-logo">AWS</div>
+                ⚖️ Elastic Load Balancing
+                <div class="box-sub">Application Load Balancer<br>HTTPS → HTTP · Path routing<br>Health checks every 30s</div>
+              </div>
+              <div class="box nat l-gw">
+                <div class="box-aws-logo">AWS</div>
+                🔀 NAT Gateway
+                <div class="box-sub">Outbound-only internet<br>for private subnet services</div>
+              </div>
+            </div>
+          </div>
+          <!-- SG sidebar -->
+          <div class="sg-sidebar">
+            <div class="sg-box">
+              <div class="sg-name">sg-alb</div>
+              <div class="sg-rule">Port 443 inbound<br>from 0.0.0.0/0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="arrow-row">
+          <div class="arrow-spacer"></div>
+          <div class="arrow-col">
+            <div class="arr">
+              <div class="arr-line ag"></div>
+              <div class="arr-tip down tg"></div>
+              <div class="arr-label">HTTP port 80 · internal only</div>
+            </div>
+            <div class="arr">
+              <div class="arr-tip up tg"></div>
+              <div class="arr-line ag"></div>
+              <div class="arr-label">response</div>
+            </div>
+          </div>
+          <div class="sg-sidebar">
+            <div class="sg-box">
+              <div class="sg-name">sg-api</div>
+              <div class="sg-rule">Port 80 inbound<br>from sg-alb only</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- LAYER 3: EC2 Auto Scaling (private subnet)              -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="layer-row">
+          <div class="layer-label" style="color:#64748B;font-size:10px;">Private Subnets<br>AZ-a &amp; AZ-b</div>
+          <div class="layer-box l-eks">
+            <div class="inner-group l-eks">
+              <div class="ig-title">
+                EC2 Auto Scaling Group &nbsp;·&nbsp; Node.js on EC2 &nbsp;·&nbsp; Scaling Policy: CPU &gt; 70% &nbsp;·&nbsp; Min 2 / Max 10 EC2 instances
+              </div>
+              <div class="box-row">
+                <div class="box l-eks">
+                  Auth Service
+                  <div class="box-sub">OTP · JWT</div>
+                </div>
+                <div class="box l-eks">
+                  Content API
+                  <div class="box-sub">Subjects<br>Assets · Grades</div>
+                </div>
+                <div class="box l-eks">
+                  Video Service
+                  <div class="box-sub">VdoCipher<br>OTP generation</div>
+                </div>
+                <div class="box l-eks">
+                  Progress API
+                  <div class="box-sub">Real-time sync<br>(Retail app)</div>
+                </div>
+                <div class="box l-eks">
+                  Offline Sync API
+                  <div class="box-sub">Batch sync<br>batchId</div>
+                </div>
+                <div class="box l-eks">
+                  Installation API
+                  <div class="box-sub">Device reg.<br>SD card auth</div>
+                </div>
+                <div class="box l-eks">
+                  Dashboard API
+                  <div class="box-sub">Admin full<br>R/W access</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sg-sidebar" style="justify-content:center">
+            <div style="font-size:9px;color:#94A3B8;text-align:center;line-height:1.5;">
+              EC2 worker nodes<br>host the EC2 instances<br>(Amazon EC2)
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="arrow-row">
+          <div class="arrow-spacer"></div>
+          <div class="arrow-col">
+            <div class="arr">
+              <div class="arr-line av"></div>
+              <div class="arr-tip down tv"></div>
+              <div class="arr-label">Mongoose · port 27017</div>
+            </div>
+            <div class="arr">
+              <div class="arr-tip up tv"></div>
+              <div class="arr-line av"></div>
+              <div class="arr-label">query result</div>
+            </div>
+          </div>
+          <div class="sg-sidebar">
+            <div class="sg-box">
+              <div class="sg-name">sg-db</div>
+              <div class="sg-rule">Port 27017 inbound<br>from sg-api only</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- LAYER 4: DATABASE (private subnet)         -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="layer-row">
+          <div class="layer-label" style="color:#64748B;font-size:10px;">Private Subnets<br>DB tier</div>
+          <div class="layer-box l-db">
+            <div class="box-row" style="align-items:stretch">
+              <div class="inner-group l-db" style="flex:2">
+                <div class="ig-title">MongoDB Atlas &nbsp;·&nbsp; MongoDB Atlas (managed) &nbsp;·&nbsp; MongoDB Atlas storage (managed)</div>
+                <div class="box-row">
+                  <div class="cylinder-wrap">
+                    <div class="cylinder l-db">🗄️ Primary</div>
+                    <div class="cylinder-cap l-db">AZ-a · Reads + Writes</div>
+                  </div>
+                  <div class="cylinder-wrap">
+                    <div class="cylinder l-db">🗄️ Secondary 1</div>
+                    <div class="cylinder-cap l-db">AZ-a · Read replica</div>
+                  </div>
+                  <div class="cylinder-wrap">
+                    <div class="cylinder l-db">🗄️ Secondary 2</div>
+                    <div class="cylinder-cap l-db">AZ-b · Failover</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:7px;margin-left:12px;min-width:230px;justify-content:center">
+
+                <div style="font-size:10px;font-weight:700;color:#5B21B6;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">Collections — by Group</div>
+
+                <div style="background:#F3F0FF;border:1px solid #C4B5FD;border-radius:6px;padding:7px 10px;">
+                  <div style="font-size:9px;font-weight:700;color:#7C3AED;margin-bottom:3px;">👤 User &amp; Auth</div>
+                  <div style="font-size:10px;color:#4C1D95;font-family:monospace;">users &nbsp;·&nbsp; otps</div>
+                </div>
+
+                <div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:6px;padding:7px 10px;">
+                  <div style="font-size:9px;font-weight:700;color:#15803D;margin-bottom:3px;">📚 Content</div>
+                  <div style="font-size:10px;color:#14532D;font-family:monospace;">content &nbsp;·&nbsp; activities<br>popularassets &nbsp;·&nbsp; exampapers</div>
+                </div>
+
+                <div style="background:#EFF6FF;border:1px solid #93C5FD;border-radius:6px;padding:7px 10px;">
+                  <div style="font-size:9px;font-weight:700;color:#1D4ED8;margin-bottom:3px;">📊 Engagement &amp; Reporting</div>
+                  <div style="font-size:10px;color:#1E3A5F;font-family:monospace;">useractivities &nbsp;·&nbsp; activityreports<br>progressreports</div>
+                </div>
+
+                <div style="background:#FFF7ED;border:1px solid #FCD34D;border-radius:6px;padding:7px 10px;">
+                  <div style="font-size:9px;font-weight:700;color:#92400E;margin-bottom:3px;">🏫 Organisation &amp; Licensing</div>
+                  <div style="font-size:10px;color:#713F12;font-family:monospace;">orgconfigs &nbsp;·&nbsp; licences</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="sg-sidebar" style="justify-content:center">
+            <div style="font-size:9px;color:#94A3B8;text-align:center;line-height:1.6;">
+              write concern: majority<br>
+              failover &lt; 10 seconds<br>
+              MongoDB Atlas automated backups [To confirm]
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /inner layers inside VPC -->
+    </div><!-- /vpc-wrapper -->
+
+    <!-- Arrow after VPC -->
+    <div class="arrow-row" style="margin-top:0">
+      <div class="arrow-spacer"></div>
+      <div class="arrow-col">
+        <div class="arr">
+          <div class="arr-line aa"></div>
+          <div class="arr-tip down ta"></div>
+          <div class="arr-label">S3 API · presigned URLs</div>
+        </div>
+        <div class="arr">
+          <div class="arr-line as"></div>
+          <div class="arr-tip down ts"></div>
+          <div class="arr-label">credentials at runtime</div>
+        </div>
+        <div class="arr">
+          <div class="arr-line as"></div>
+          <div class="arr-tip down ts"></div>
+          <div class="arr-label">alarms → alerts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- LAYER 5: STORAGE                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="layer-row">
+      <div class="layer-label">Storage Layer</div>
+      <div class="layer-box l-st">
+        <div class="box-row">
+          <div class="cylinder-wrap">
+            <div class="cylinder l-st">
+              <div class="box-aws-logo">AWS</div>
+              🗂️ Amazon S3
+            </div>
+            <div class="cylinder-cap l-st">Activity ZIPs · Admin SPA<br>ALB access logs</div>
+          </div>
+          <div class="box l-st">
+            <div class="box-aws-logo">AWS</div>
+            🌍 Amazon CloudFront
+            <div class="box-sub">CDN · Global edge delivery<br>Admin SPA + Activity files</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="arrow-row">
+      <div class="arrow-spacer"></div>
+      <div class="arrow-col">
+        <div class="arr">
+          <div class="arr-line as"></div>
+          <div class="arr-tip down ts"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- LAYER 6: OPS                               -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="layer-row">
+      <div class="layer-label">Operations Layer</div>
+      <div class="layer-box l-ops">
+        <div class="box-row">
+          <div class="box l-ops">
+            <div class="box-aws-logo">AWS</div>
+            📊 Amazon CloudWatch
+            <div class="box-sub">Metrics · Alarms · Logs<br>EC2 CPU · ALB latency<br>4xx/5xx error rates</div>
+          </div>
+          <div class="box l-ops">
+            <div class="box-aws-logo">AWS</div>
+            🔐 AWS Secrets Manager
+            <div class="box-sub">DB credentials · JWT key<br>VdoCipher · Twilio keys<br>Injected at pod startup</div>
+          </div>
+          <div class="box sns l-ops">
+            <div class="box-aws-logo">AWS</div>
+            🔔 Amazon SNS
+            <div class="box-sub">CloudWatch alarm → SNS<br>Email / SMS alerts<br>to infrastructure team</div>
+          </div>
+          <div style="display:flex;align-items:center;margin-left:8px;font-size:10px;color:#15803D;line-height:1.7;max-width:220px">
+            CloudWatch detects threshold breach<br>
+            → triggers SNS notification<br>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="arrow-row">
+      <div class="arrow-spacer"></div>
+      <div class="arrow-col">
+        <div class="arr">
+          <div class="arr-line as"></div>
+          <div class="arr-tip down ts"></div>
+          <div class="arr-label">via NAT Gateway</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- LAYER 7: EXTERNAL SERVICES                 -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="layer-row">
+      <div class="layer-label">External Services</div>
+      <div class="layer-box l-ext">
+        <div class="box-row">
+          <div class="box l-ext">
+            🎬 VdoCipher
+            <div class="box-sub">DRM video streaming<br>Retail live · Org offline</div>
+          </div>
+          <div class="box l-ext">
+            💬 Twilio / SMSPortal
+            <div class="box-sub">OTP SMS<br>Retail login only</div>
+          </div>
+          <div class="box l-ext">
+            🔔 Firebase
+            <div class="box-sub">FCM push · Analytics<br>Retail + Org</div>
+          </div>
+          <div class="box l-ext">
+            📚 Moodle LMS
+            <div class="box-sub">Content CMS<br>Admin sync trigger</div>
+          </div>
+          <div class="box l-ext">
+            💳 Google Play Billing
+            <div class="box-sub">Subscriptions<br>Retail only</div>
+          </div>
+          <div class="box l-ext">
+            📢 AdMob · InMobi
+            <div class="box-sub">Ad mediation<br>Retail only</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /layers -->
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#CFFAFE;border-color:#06B6D4"></div>Route 53 (DNS)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#BFDBFE;border-color:#3B82F6"></div>Elastic Load Balancing</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FECDD3;border-color:#F43F5E"></div>WAF / Security</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D1FAE5;border-color:#34D399"></div>EC2 Auto Scaling (API Services)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EDE9FE;border-color:#7C3AED"></div>MongoDB Atlas</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FEF08A;border-color:#CA8A04"></div>S3 + CloudFront</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D1FAE5;border-color:#16A34A"></div>CloudWatch + SNS + Secrets</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E2E8F0;border-color:#94A3B8"></div>External Services</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EFF6FF;border-color:#2563EB"></div>Amazon VPC boundary</div>
+  </div>
+
+  <footer>Edukite Technologies &nbsp;·&nbsp; Infrastructure Architecture &nbsp;·&nbsp; Confirmed AWS Services &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; Confidential</footer>
+
+</div>
+</body>
+</html>
