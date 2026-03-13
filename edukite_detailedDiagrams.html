@@ -430,8 +430,7 @@ body {
         <div class="brand-sub">CLIENT APPLICATION ARCHITECTURE · ALL 4 APPS</div>
       </div>
     </div>
-    <div class="masthead-meta">
-      APK v2.4.14 · System Doc v1.5<br>
+    <div class="masthead-meta">      
       March 2026 · Confidential · Technical DD
     </div>
   </div>
@@ -664,7 +663,7 @@ body {
 
   <!-- RIGHT: External Services -->
   <div>
-    <div class="ext-card"><div class="ext-title">AWS Backend</div><div class="ext-item">ALB (Capetown)</div><div class="ext-item">EKS API Cluster</div><div class="ext-item">Auth Service</div><div class="ext-item">Content API</div><div class="ext-item">Progress API</div><div class="ext-item">Sync API</div></div>
+    <div class="ext-card"><div class="ext-title">AWS Backend</div><div class="ext-item">backend-ELB (ALB, Capetown)</div><div class="ext-item">EKS API Cluster</div><div class="ext-item">Auth Service</div><div class="ext-item">Content API</div><div class="ext-item">Progress API</div><div class="ext-item">Sync API</div></div>
     <div class="ext-card"><div class="ext-title">Content Delivery</div><div class="ext-item">VdoCipher DRM</div><div class="ext-item">AWS S3</div><div class="ext-item">CloudFront CDN</div></div>
     <div class="ext-card"><div class="ext-title">Database</div><div class="ext-item">MongoDB Replica</div><div class="ext-item">users collection</div><div class="ext-item">contents structure</div><div class="ext-item">progress</div><div class="ext-item">activities</div></div>
     <div class="ext-card"><div class="ext-title">Auth & Messaging</div><div class="ext-item">Twilio / SMSPortal OTP</div><div class="ext-item">Firebase FCM</div></div>
@@ -693,7 +692,7 @@ body {
   <div class="legend-item"><div class="legend-dot" style="background:#EC4899"></div>Remote (Retrofit)</div>
   <div class="legend-item"><div class="legend-dot" style="background:#334155"></div>Background / WorkManager</div>
 </div>
-<footer>Edukite · Android Retail App Architecture · Derived from APK Analysis v2.4.14 + System Architecture v1.5 · March 2026</footer>
+<footer>Edukite · Android Retail App Architecture · System Architecture · March 2026</footer>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -750,7 +749,7 @@ body {
   </div>
 </div>
 <div class="flow-bar"><div class="flow-bar-title">Operational Flow</div><div class="flow-steps"><div class="fs fs-b">① Insert microSD</div><div class="fa">→</div><div class="fs fs-b">② Read orgCode config</div><div class="fa">→</div><div class="fs fs-b">③ One-time activation<br><span style="font-weight:400;font-size:9px">POST /installation</span></div><div class="fa">→</div><div class="fs fs-g">④ Fully Offline Mode</div><div class="fa">→</div><div class="fs fs-a">⑤ Play content<br><span style="font-weight:400;font-size:9px">AWS Enc SDK decrypt</span></div><div class="fa">→</div><div class="fs fs-a">⑥ Progress → Room DB<br><span style="font-weight:400;font-size:9px">isSynced=false</span></div><div class="fa">→</div><div class="fs fs-t">⑦ Internet sync<br><span style="font-weight:400;font-size:9px">WorkManager flush</span></div></div></div>
-<footer>Edukite · Android App Architecture(Org) · APK Analysis + System Architecture v1.5 · March 2026</footer>
+<footer>Edukite · Android App Architecture(Org) + System Architecture · March 2026</footer>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -981,12 +980,12 @@ body {
       <div class="card-title ct-violet">Infrastructure</div>
       <div class="chips" style="margin-bottom:8px">
         <div class="chip ch-violet">React SPA → S3 + CloudFront</div>
-        <div class="chip ch-violet">API → EC2 · SSL at ALB</div>
-        <div class="chip ch-violet">MongoDB private subnet</div>
+        <div class="chip ch-violet">API → EC2 t3.large · SSL at ALB</div>
+        <div class="chip ch-violet">MongoDB Atlas (cloud-hosted)</div>
       </div>
       <div class="sub-label">External</div>
       <div class="chips">
-        <div class="chip ch-rose">Moodle LMS (content sync)</div>
+        <div class="chip ch-rose">Moodle LMS (self-hosted EC2)</div>
         <div class="chip ch-rose">Firebase FCM (notifications)</div>
         <div class="chip ch-rose">AWS CloudWatch (monitoring)</div>
       </div>
