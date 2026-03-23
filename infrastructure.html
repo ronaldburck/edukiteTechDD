@@ -238,12 +238,12 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
         <div class="layer-row">
           <div class="layer-label" style="color:#64748B;font-size:10px;">Public Subnets<br>AZ-a &amp; AZ-b</div>
           <div class="layer-box l-gw">
-            <div class="box-row">
-              <div class="box l-gw">
+            <div class="box-row"style="justify-content: center;">
+<!--               <div class="box l-gw">
                 <div class="box-aws-logo">AWS</div>
                 🛡️ AWS WAF
                 <div class="box-sub">DDoS · SQLi · Bot filtering<br>Attached to ALB</div>
-              </div>
+              </div> -->
               <div class="box alb l-gw">
                 <div class="box-aws-logo">AWS</div>
                 ⚖️ Elastic Load Balancing
@@ -296,7 +296,7 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
           <div class="layer-box l-eks">
             <div class="inner-group l-eks">
               <div class="ig-title">
-                EC2 Auto Scaling Group &nbsp;·&nbsp; Node.js on EC2 &nbsp;·&nbsp; Scaling Policy: CPU &gt; 70% &nbsp;·&nbsp; Min 2 / Max 10 EC2 instances
+                EC2 Auto Scaling Group &nbsp;·&nbsp; Node.js on EC2 &nbsp;·&nbsp; Scaling Policy: CPU &gt; 70% &nbsp;·&nbsp; Min 1 EC2 instance
               </div>
               <div class="box-row">
                 <div class="box l-eks">
@@ -376,7 +376,7 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
                   </div>
                   <div class="cylinder-wrap">
                     <div class="cylinder l-db">🗄️ Secondary 1</div>
-                    <div class="cylinder-cap l-db">AZ-a · Read replica</div>
+                    <div class="cylinder-cap l-db">MongoDB Atlas (VPC Peering) — remove other replica cylinders</div>
                   </div>
                   <div class="cylinder-wrap">
                     <div class="cylinder l-db">🗄️ Secondary 2</div>
@@ -457,12 +457,12 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
               <div class="box-aws-logo">AWS</div>
               🗂️ Amazon S3
             </div>
-            <div class="cylinder-cap l-st">Activity ZIPs · Admin SPA<br>ALB access logs</div>
+            <div class="cylinder-cap l-st">Activity ZIPs · Web Admin Dashboard<br>ALB access logs</div>
           </div>
           <div class="box l-st">
             <div class="box-aws-logo">AWS</div>
             🌍 Amazon CloudFront
-            <div class="box-sub">CDN · Global edge delivery<br>Admin SPA + Activity files</div>
+            <div class="box-sub">CDN · Global edge delivery<br>Activity files · Web Admin Dashboard via Amplify</div>
           </div>
         </div>
       </div>
@@ -494,7 +494,7 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
           <div class="box l-ops">
             <div class="box-aws-logo">AWS</div>
             🔐 AWS Secrets Manager
-            <div class="box-sub">DB credentials · JWT key<br>VdoCipher · Twilio keys<br>Injected at pod startup</div>
+            <div class="box-sub">Content encryption key only <br> used by educli for Android Org and Windows content packs</div>
           </div>
           <div class="box sns l-ops">
             <div class="box-aws-logo">AWS</div>
