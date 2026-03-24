@@ -214,11 +214,11 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
     <div class="hdr-left">
       <div class="co">Edukite Learning Services Pvt Ltd</div>
       <div class="ttl">Overall System Architecture</div>
-      <div class="sub">4 Client Apps &nbsp;·&nbsp; AWS af-south-1 &nbsp;·&nbsp; · MongoDB · 11 Collections &nbsp;·&nbsp; 6 External Services</div>
+      <div class="sub">4 Client Apps &nbsp;·&nbsp; AWS af-south-1 &nbsp;·&nbsp; · MongoDB · 28 Collections &nbsp;·&nbsp; 6 External Services</div>
     </div>
     <div class="hdr-right">
       <!-- <div class="badge badge-navy">Technical Due Diligence</div> -->
-      <div class="badge badge-date">March 2026 · Confidential</div>
+      <div class="badge badge-date">Confidential</div>
     </div>
   </div>
 
@@ -285,7 +285,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           <div class="grp" style="background:var(--adm-bg);border-color:var(--adm-bd)">
             <div class="grp-t" style="color:var(--adm)">🌐 Web Admin &nbsp;·&nbsp; React · TypeScript</div>
             <div class="row">
-              <div class="box adm">React SPA<div class="box-s">TypeScript<br>Served via CloudFront</div></div>
+              <div class="box adm">Web Admin Dashboard<div class="box-s">TypeScript<br>AWS Amplify</div></div>
               <div class="box adm">Dashboard<div class="box-s">Users · Orgs<br>Content · Analytics</div></div>
               <div class="box adm">Reports<div class="box-s">Progress · Activity<br>Moodle sync</div></div>
             </div>
@@ -346,12 +346,12 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
         <div class="lrow">
           <div class="llabel" style="font-size:9px;color:#64748B;">Public Subnets<br>AZ-a &amp; AZ-b</div>
           <div class="lbox waf" style="border-style:dashed;">
-            <div class="row">
-              <div class="box waf">
+            <div class="row"style="justify-content: center;">
+              <!-- <div class="box waf">
                 <div class="box-tag">AWS</div>
                 🛡️ AWS WAF
                 <div class="box-s">DDoS · SQLi · Bot<br>Attached to ALB</div>
-              </div>
+              </div> -->
               <div class="box alb" style="min-width:180px;">
                 <div class="box-tag">AWS</div>
                 ⚖️ Elastic Load Balancing (ALB)
@@ -387,7 +387,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           <div class="lbox eks" style="border-style:dashed;">
             <div class="grp eks" style="border-style:solid;">
               <div class="grp-t" style="color:var(--eks-c);">
-                EC2 Auto Scaling Group &nbsp;·&nbsp; Node.js on EC2 &nbsp;·&nbsp; Scale at CPU &gt; 70% &nbsp;·&nbsp; Min 2 / Max 10 EC2 instances
+                EC2 Auto Scaling Group &nbsp;·&nbsp; Node.js on EC2 &nbsp;·&nbsp; Scale at CPU &gt; 70% &nbsp;·&nbsp; Min 1 EC2 instance
               </div>
               <div class="row">
                 <div class="box eks">Auth Service<div class="box-s">OTP · JWT<br>Google login<br>Biz/Org login</div></div>
@@ -423,28 +423,20 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           <div class="lbox dbc" style="border-style:dashed;">
             <div class="row" style="align-items:stretch;">
 
-              <!-- Replica set -->
-              <div class="grp dbc" style="flex:1.2;border-style:solid;">
-                <div class="grp-t" style="color:var(--db-c);">MongoDB  &nbsp;·&nbsp; Amazon EC2 &nbsp;·&nbsp; &nbsp;·&nbsp; write concern: majority</div>
-                <div class="row">
-                  <div class="cyl-w">
-                    <div class="cyl dbc">🗄️ Primary</div>
-                    <div class="cyl-b dbc">AZ-a · Reads + Writes</div>
-                  </div>
-                  <div class="cyl-w">
-                    <div class="cyl dbc">🗄️ Secondary 1</div>
-                    <div class="cyl-b dbc">AZ-a · Read replica</div>
-                  </div>
-                  <div class="cyl-w">
-                    <div class="cyl dbc">🗄️ Secondary 2</div>
-                    <div class="cyl-b dbc">AZ-b · Failover &lt;10s</div>
-                  </div>
-                </div>
-              </div>
+			   <!-- MongoDB Atlas -->
+			<div class="grp dbc" style="flex:1.2;border-style:solid;">
+			  <div class="grp-t" style="color:var(--db-c);">MongoDB Atlas &nbsp;·&nbsp; Connected via VPC Peering &nbsp;·&nbsp; Fully managed</div>
+			  <div class="row" style="justify-content:center;padding:10px;">
+				<div class="cyl-w">
+				  <div class="cyl dbc">🗄️ MongoDB Atlas</div>
+				  <div class="cyl-b dbc">VPC Peering · ap-south-1</div>
+				</div>
+			  </div>
+			</div>
 
               <!-- 11 Collections grouped -->
               <div style="margin-left:10px;flex:1.4;display:flex;flex-direction:column;gap:0;">
-                <div style="font-size:9px;font-weight:700;color:var(--db-c);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;">11 Collections — by Group</div>
+                <div style="font-size:9px;font-weight:700;color:var(--db-c);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;">Collections — by Group</div>
                 <div class="col-groups">
                   <div class="col-grp" style="background:var(--col-auth);border-color:var(--col-auth-bd);">
                     <div class="col-grp-t" style="color:var(--col-auth-c);">👤 User &amp; Auth</div>
@@ -491,15 +483,15 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
         <div class="row">
           <div class="cyl-w">
             <div class="cyl s3"><div class="box-tag">AWS</div>🗂️ Amazon S3</div>
-            <div class="cyl-b s3">edukite-content (ZIPs · thumbs)<br>edukite-admin-spa (React build)<br>edukite-alb-logs (access logs)</div>
+            <div class="cyl-b s3">edukite-asset-prod (ZIPs · thumbs)<br><br>edukite-elb-access-logs (access logs)</div>
           </div>
           <div class="box cfc" style="align-self:center;">
             <div class="box-tag">AWS</div>
             🌍 CloudFront CDN
-            <div class="box-s">Global edge · Admin SPA<br>HTML5 activity files<br>Presigned URL validation</div>
+            <div class="box-s">Global edge · Web admin dashboard(Deployed via AWS Amplify) <br>HTML5 activity files<br>Presigned URL validation</div>
           </div>
           <div style="font-size:10px;color:#92400E;margin-left:8px;line-height:1.8;align-self:center;">
-            Admin SPA served via CloudFront<br>
+            Web Admin Dashboard via AWS Amplify<br>
             Activity ZIPs via CloudFront edge<br>
             Pre-signed URLs (15-min expiry)<br>
             for private content access
@@ -526,12 +518,12 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           <div class="box ops">
             <div class="box-tag">AWS</div>
             📊 Amazon CloudWatch
-            <div class="box-s">EC2 CPU · ALB latency<br>5xx error rate<br>MongoDB replication lag</div>
+            <div class="box-s">EC2 CPU · ALB latency<br>5xx error rate</div>
           </div>
           <div class="box sec">
             <div class="box-tag">AWS</div>
             🔐 Secrets Manager
-            <div class="box-s">MongoDB creds · JWT key<br>VdoCipher · Twilio keys<br>CSI driver →EC2 instances<br>IAM roles — no static keys</div>
+            <div class="box-s">Content encryption key · educli · Android Org + Windows only</div>
           </div>
           <div class="box sns">
             <div class="box-tag">AWS</div>
@@ -540,7 +532,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
           </div>
           <div style="font-size:10px;color:#065F46;margin-left:8px;line-height:1.8;align-self:center;">
             CW alarm → SNS → email/SMS<br>            
-            Secrets injected at pod startup<br>
+            Used by educli at content pack creation<br>
             EC2 uses IAM instance roles
           </div>
         </div>
@@ -617,7 +609,7 @@ footer { text-align:center; font-size:10px; color:var(--dim); margin-top:28px; p
   </div><!-- /diagram -->
 
   <footer>
-    Edukite Learning Services Pvt Ltd &nbsp;·&nbsp; Overall System Architecture &nbsp;·&nbsp; AWS af-south-1 (CapeTown) &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; Confidential
+    Edukite Learning Services Pvt Ltd &nbsp;·&nbsp; Overall System Architecture &nbsp;·&nbsp; AWS af-south-1 (CapeTown) &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Confidential
   </footer>
 
 </div>

@@ -5,6 +5,47 @@
 <title>Edukite — Infrastructure Architecture</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+:root {
+  --bg:        #F4F6FA;
+  --white:     #FFFFFF;
+  --border:    #E2E8F0;
+  --text:      #1E293B;
+  --muted:     #94A3B8;
+  --dim:       #CBD5E1;
+
+  /* App colours */
+  --retail:    #3B82F6;
+  --retail-bg: #EFF6FF;
+  --retail-bd: #BFDBFE;
+
+  --org:       #16A34A;
+  --org-bg:    #F0FDF4;
+  --org-bd:    #86EFAC;
+
+  --win:       #7C3AED;
+  --win-bg:    #F5F3FF;
+  --win-bd:    #C4B5FD;
+
+  --adm:       #D97706;
+  --adm-bg:    #FFFBEB;
+  --adm-bd:    #FDE68A;
+
+  /* Layer colours */
+  --dns-bg:    #ECFEFF; --dns-bd: #67E8F9; --dns-c: #0E7490;
+  --gw-bg:     #FFF1F2; --gw-bd:  #FECDD3; --gw-c:  #9F1239;
+  --alb-bg:    #EFF6FF; --alb-bd: #93C5FD; --alb-c: #1D4ED8;
+  --eks-bg:    #F0FDF4; --eks-bd: #86EFAC; --eks-c: #15803D;
+  --db-bg:     #F5F3FF; --db-bd:  #C4B5FD; --db-c:  #5B21B6;
+  --st-bg:     #FEFCE8; --st-bd:  #FDE68A; --st-c:  #92400E;
+  --ops-bg:    #F0FDF4; --ops-bd: #6EE7B7; --ops-c: #065F46;
+  --ext-bg:    #F8FAFC; --ext-bd: #CBD5E1; --ext-c: #334155;
+
+  /* Collection group colours */
+  --col-auth:    #EDE9FE; --col-auth-bd: #A78BFA;  --col-auth-c: #4C1D95;
+  --col-content: #DCFCE7; --col-content-bd:#4ADE80; --col-content-c:#14532D;
+  --col-engage:  #DBEAFE; --col-engage-bd:#60A5FA;  --col-engage-c:#1E40AF;
+  --col-org:     #FEF3C7; --col-org-bd:  #FCD34D;  --col-org-c:  #78350F;
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Inter', sans-serif;
@@ -178,6 +219,11 @@ body {
 .legend-dot  { width: 11px; height: 11px; border-radius: 3px; border: 1.5px solid; flex-shrink: 0; }
 
 footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; }
+.badge {
+  border-radius: 5px; padding: 4px 11px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+}
+.badge-date { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
 </style>
 </head>
 <body>
@@ -187,9 +233,10 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
   <div class="title-row">
     <div>
       <div class="diagram-title">Edukite — Infrastructure Architecture</div>
-      <div class="diagram-sub">Confirmed AWS Services &nbsp;·&nbsp; af-south-1 (Capetown) &nbsp;·&nbsp; March 2026</div>
+      <div class="diagram-sub">Confirmed AWS Services &nbsp;·&nbsp; af-south-1 (Capetown) &nbsp;·&nbsp; 2026</div>
     </div>
-    <div class="region-badge">AWS af-south-1 · Capetown</div>
+    <!--<div class="region-badge">AWS af-south-1 · Capetown</div>-->
+	<div class="badge badge-date">Confidential</div>
   </div>
 
   <div class="layers">
@@ -367,23 +414,15 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
           <div class="layer-label" style="color:#64748B;font-size:10px;">Private Subnets<br>DB tier</div>
           <div class="layer-box l-db">
             <div class="box-row" style="align-items:stretch">
-              <div class="inner-group l-db" style="flex:2">
-                <div class="ig-title">MongoDB Atlas &nbsp;·&nbsp; MongoDB Atlas (managed) &nbsp;·&nbsp; MongoDB Atlas storage (managed)</div>
-                <div class="box-row">
-                  <div class="cylinder-wrap">
-                    <div class="cylinder l-db">🗄️ Primary</div>
-                    <div class="cylinder-cap l-db">AZ-a · Reads + Writes</div>
-                  </div>
-                  <div class="cylinder-wrap">
-                    <div class="cylinder l-db">🗄️ Secondary 1</div>
-                    <div class="cylinder-cap l-db">MongoDB Atlas (VPC Peering) — remove other replica cylinders</div>
-                  </div>
-                  <div class="cylinder-wrap">
-                    <div class="cylinder l-db">🗄️ Secondary 2</div>
-                    <div class="cylinder-cap l-db">AZ-b · Failover</div>
-                  </div>
-                </div>
-              </div>
+            <div class="inner-group l-db" style="flex:2">
+  <div class="ig-title">MongoDB Atlas &nbsp;·&nbsp; Connected via VPC Peering &nbsp;·&nbsp; Fully managed</div>
+  <div class="box-row" style="justify-content:center;padding:10px;">
+    <div class="cylinder-wrap">
+      <div class="cylinder l-db">🗄️ MongoDB Atlas</div>
+      <div class="cylinder-cap l-db">VPC Peering · ap-south-1</div>
+    </div>
+  </div>
+</div>
               <div style="display:flex;flex-direction:column;gap:7px;margin-left:12px;min-width:230px;justify-content:center">
 
                 <div style="font-size:10px;font-weight:700;color:#5B21B6;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">Collections — by Group</div>
@@ -563,7 +602,7 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="background:#CFFAFE;border-color:#06B6D4"></div>Route 53 (DNS)</div>
     <div class="legend-item"><div class="legend-dot" style="background:#BFDBFE;border-color:#3B82F6"></div>Elastic Load Balancing</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#FECDD3;border-color:#F43F5E"></div>WAF / Security</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FECDD3;border-color:#F43F5E"></div>Security</div>
     <div class="legend-item"><div class="legend-dot" style="background:#D1FAE5;border-color:#34D399"></div>EC2 Auto Scaling (API Services)</div>
     <div class="legend-item"><div class="legend-dot" style="background:#EDE9FE;border-color:#7C3AED"></div>MongoDB Atlas</div>
     <div class="legend-item"><div class="legend-dot" style="background:#FEF08A;border-color:#CA8A04"></div>S3 + CloudFront</div>
@@ -572,7 +611,7 @@ footer { text-align: center; font-size: 10px; color: #CBD5E1; margin-top: 24px; 
     <div class="legend-item"><div class="legend-dot" style="background:#EFF6FF;border-color:#2563EB"></div>Amazon VPC boundary</div>
   </div>
 
-  <footer>Edukite Technologies &nbsp;·&nbsp; Infrastructure Architecture &nbsp;·&nbsp; Confirmed AWS Services &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; Confidential</footer>
+  <footer>Edukite Technologies &nbsp;·&nbsp; Infrastructure Architecture &nbsp;·&nbsp; Confirmed AWS Services &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Confidential</footer>
 
 </div>
 </body>
